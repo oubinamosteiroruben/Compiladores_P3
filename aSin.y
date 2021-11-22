@@ -10,6 +10,8 @@
     #include <dlfcn.h>
     #include <string.h>
 
+    #include "stack.h"
+
     #define MAX 30
 
     void yyerror(char *s);
@@ -18,6 +20,11 @@
     void imprimirFunciones();
     void imprimirVariables();
     void imprimirConstantes();
+    void destruirLibrerias();
+
+    void destruirLibrerias();
+    void loadArchivo(char * archivo);
+
 %}
 
 %define api.value.type union
@@ -45,12 +52,13 @@
 %token TKN_IGUAL
 
 %token TKN_EXIT
-%token TKN_LOAD
+%token TKN_ADD
 %token TKN_HELP
 %token TKN_IMPRIMIR
 %token TKN_GETVARS
 %token TKN_GETCTES
 %token TKN_RESET
+%token TKN_LOAD
 
 %token <tipoArchivo> TKN_ARCHIVO
 
@@ -96,11 +104,13 @@ Valor:  TKN_PARIZQ Expresion TKN_PARDER {$$=$2;}
         |TKN_FNC TKN_PARIZQ Expresion TKN_PARDER {printf("NUM: %lf\n",$1.valor.fnc($3)); $$=$1.valor.fnc($3);}
 ;
 
-Otro: TKN_LOAD TKN_ARCHIVO {printf("archivo: %s\n",$2.valor.nombre);  addFunciones($2.valor.nombre);}
+Otro: TKN_ADD TKN_ARCHIVO {printf("archivo: %s\n",$2.valor.nombre);  addFunciones($2.valor.nombre);}
     | TKN_IMPRIMIR {printf("IMPRIMIR\n"); imprimirTablaSimbolos();}
     | TKN_GETVARS {printf("Variables\n"); imprimirVariables();}
     | TKN_GETCTES {printf("Constantes\n"); imprimirConstantes();}
     | TKN_HELP {printf("Help\n"); imprimirFunciones();}
+    | TKN_EXIT {printf("Exit\n"); destruirLibrerias(); exit(0);}
+    | TKN_LOAD TKN_ARCHIVO {printf("Load archivo: %s\n",$2.valor.nombre); loadArchivo($2.valor.nombre);}
 ;
             
 
@@ -125,6 +135,13 @@ void addFunciones(char * archivo){
     if(!libhandle){
         yyerror("dlopen");
     }else{
+        tipoelempila E;
+        printf("eo\n");
+        E.tipo = TIPO_LIB;
+        printf("aa\n");
+        E.lib = libhandle;
+        printf("bb\n");
+        nuevoElemStack(E);
         printf("Abrió bien");
         char nombre[MAX];
         FILE *fd;
@@ -157,7 +174,6 @@ void asignarVariable(char * nombre, double n){
     if(existe(nombre)){
         suprimirElem(nombre);
     }
-   
     E.valor.val = n;
     E.tipo = TKN_VAR;
     insertarSimbolo(E);
@@ -176,6 +192,22 @@ void imprimirFunciones(){
 }
 
 
+void destruirLibrerias(){
+    destruirStack(TIPO_LIB);
+}
+
+void loadArchivo(char * archivo){
+    FILE * fd;
+    if(fd=fopen(archivo,"r")){
+        tipoelempila E;
+        E.tipo = TIPO_FD;
+        E.fd = fd;
+        nuevoElemStack(E);
+        yyin = fd;
+    }else{
+        yyerror("fopen");
+    }
+}
 
 
 

@@ -8,10 +8,12 @@
     #include "definiciones.h"
     #include "tablaSimbolos.h"
     #include <string.h>
+    #include "stack.h"
 
     int nLines = 0;
 
     tipoArchivo A;
+
 %}
 
 
@@ -27,25 +29,28 @@ INTEGER [1-9]{DIGITO}*|"0"
 NUMERO {INTEGER}|{FLOATNUM}
 
 EXIT "exit"|"EXIT" 
-LOAD "load"|"LOAD" 
+ADD "add"|"ADD" 
 HELP "help"|"HELP" 
 IMPRIMIR "imprimir"|"IMPRIMIR" 
 VARIABLES "variables"|"VARIABLES" 
 RESET "reset"|"RESET" 
 CONSTANTES "constantes"|"CONSTANTES"
+LOAD "load"|"LOAD"
 
 IDENTIFICADOR [a-zA-Z_][a-zA-Z0-9_]*
 
 ARCHIVO {IDENTIFICADOR}[.]{IDENTIFICADOR}
+
 
 %%
 
 {NUMERO} { printf("Encontrado TKN_NUM: %f\n",atof(yytext));
                            yylval.TKN_NUM =atof(yytext); 
                            return(TKN_NUM);}
-
 {LOAD} {printf("Encontrado TKN_LOAD: %s\n",yytext);
-       return(TKN_LOAD);}
+        return(TKN_LOAD);}
+{ADD} {printf("Encontrado TKN_ADD: %s\n",yytext);
+       return(TKN_ADD);}
 {IMPRIMIR} {printf("Encontrado TKN_IMPRIMIR: %s\n",yytext);
             return (TKN_IMPRIMIR);}
 {EXIT} {printf("Encontrado TKN_EXIT: %s\n",yytext);
@@ -117,7 +122,16 @@ ARCHIVO {IDENTIFICADOR}[.]{IDENTIFICADOR}
 "=" {printf("Encontrado TKN_IGUAL: %s\n",yytext);
     return(TKN_IGUAL);}
 "\n" {nLines++;return(TKN_SALTO);}
-.
 
+
+
+<<EOF>>  { if(stackVacio(TIPO_FD) == TRUE){
+            yyin = stdin; 
+            eliminarElementoStack(TIPO_FD);
+        }else{
+            eliminarElementoStack(TIPO_FD);
+            tipoelempila E = topeStack(TIPO_FD);
+            yyin = E.fd;
+        }}
 %%
 

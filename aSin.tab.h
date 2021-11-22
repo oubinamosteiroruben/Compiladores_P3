@@ -63,13 +63,14 @@ extern int yydebug;
     TKN_COS = 273,
     TKN_IGUAL = 274,
     TKN_EXIT = 275,
-    TKN_LOAD = 276,
+    TKN_ADD = 276,
     TKN_HELP = 277,
     TKN_IMPRIMIR = 278,
     TKN_GETVARS = 279,
     TKN_GETCTES = 280,
     TKN_RESET = 281,
-    TKN_ARCHIVO = 282
+    TKN_LOAD = 282,
+    TKN_ARCHIVO = 283
   };
 #endif
 
@@ -101,7 +102,7 @@ union YYSTYPE
   tipoelem TKN_CTE;
   /* TKN_NOINI  */
   tipoelem TKN_NOINI;
-#line 105 "aSin.tab.h" /* yacc.c:1909  */
+#line 106 "aSin.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
