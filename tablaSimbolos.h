@@ -50,6 +50,24 @@ tipoelem getElem(char * nombre);
  * */
 void suprimirElem(char * nombre);
 
+/**
+ * 
+ * Imprime todos los simbolos almacenados de un tipo determinado
+ * @param tipo
+ * */
 void imprimirTipoTablaSimbolos(int tipo);
+
+/**
+ * 
+ * Resetea todas las variables almacenadas en la tabla de símbolos
+ * */
+void resetVariables();
+
+/**
+ * 
+ * Resetea todas las constantes declaradas en la tabla de símbolos
+ * */
+
+void resetConstantes();
 
 #endif

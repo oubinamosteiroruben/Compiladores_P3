@@ -17,13 +17,18 @@
     void yyerror(char *s);
     void addFunciones(char * archivo);
     void asignarVariable(char * nombre, double n);
-    void imprimirFunciones();
+    void imprimirFuncionalidades();
     void imprimirVariables();
     void imprimirConstantes();
     void destruirLibrerias();
 
     void destruirLibrerias();
     void loadArchivo(char * archivo);
+    void addConstante(char * nombre, double n);
+    void reset();
+
+    extern FILE * yyin;
+    extern int yylex(void);
 
 %}
 
@@ -59,6 +64,7 @@
 %token TKN_GETCTES
 %token TKN_RESET
 %token TKN_LOAD
+%token TKN_DEFINIR
 
 %token <tipoArchivo> TKN_ARCHIVO
 
@@ -77,11 +83,13 @@ Calculadora:    TKN_SALTO
                 |Expresion TKN_SALTO {printf("RESULTADO FINAL\n");}
                 |Expresion TKN_PTOCOMA TKN_SALTO {printf("RESULTADO FINAL: %5.2f\n",$1);}
                 |Otro TKN_SALTO {printf("Otra cosa\n");}  
+                |Otro TKN_PTOCOMA TKN_SALTO {printf("Otra cosa ptocoma\n");}  
                 |Igualacion TKN_SALTO {printf("Igualación\n");}
                 |Igualacion TKN_PTOCOMA TKN_SALTO {printf("Igualación ptocoma\n");} 
   
 Igualacion: TKN_VAR TKN_IGUAL Expresion {$$ = $3; asignarVariable($1.nombre,$3);}
-            |TKN_NOINI TKN_IGUAL Expresion {$$ = $3; asignarVariable($1.nombre,$3);};
+            |TKN_NOINI TKN_IGUAL Expresion {$$ = $3; asignarVariable($1.nombre,$3);}
+            |TKN_CTE TKN_IGUAL Expresion {yyerror("constante usada\n"); return 0;};
 
 Expresion:   Expresion TKN_MAS Expr_Mult {$$ = $1+$3;}
             |Expresion TKN_MENOS Expr_Mult {$$ = $1-$3;}
@@ -108,9 +116,11 @@ Otro: TKN_ADD TKN_ARCHIVO {printf("archivo: %s\n",$2.valor.nombre);  addFuncione
     | TKN_IMPRIMIR {printf("IMPRIMIR\n"); imprimirTablaSimbolos();}
     | TKN_GETVARS {printf("Variables\n"); imprimirVariables();}
     | TKN_GETCTES {printf("Constantes\n"); imprimirConstantes();}
-    | TKN_HELP {printf("Help\n"); imprimirFunciones();}
+    | TKN_HELP {printf("Help\n"); imprimirFuncionalidades();}
     | TKN_EXIT {printf("Exit\n"); destruirLibrerias(); exit(0);}
     | TKN_LOAD TKN_ARCHIVO {printf("Load archivo: %s\n",$2.valor.nombre); loadArchivo($2.valor.nombre);}
+    | TKN_DEFINIR TKN_NOINI Expresion {printf("Nueva constante: %s\n",$2.nombre); addConstante($2.nombre,$3);}
+    | TKN_RESET {printf("Reset\n"); reset();}
 ;
             
 
@@ -153,7 +163,6 @@ void addFunciones(char * archivo){
                     strcpy(E->nombre,"cuadrado");
                     E->tipo = TKN_FNC;
                     E->valor.fnc = (accion_t) dlsym(libhandle,"cuadrado");
-                    printf("PRUEBA CUADRADO: %lf\n",E->valor.fnc(2));
                     insertarSimbolo(*E);
                 }else{
                     yyerror("funcion existente");
@@ -187,8 +196,16 @@ void imprimirConstantes(){
     imprimirTipoTablaSimbolos(TKN_CTE);
 }
 
-void imprimirFunciones(){
+void imprimirFuncionalidades(){
+    printf("Comandos rapidos:\n");
+    printf("help/HELP --> Muestra las funcionalidades de la aplicacion\n");
+    printf("load/LOAD <archivo> --> Permite cargar operaciones de un archivo\n");
+    printf("add/ADD <archivo> --> Permite cargar nuevas funciones apartir de un archivo\n");
+    printf("variables/VARIABLES --> Muestra las variables almacenadas\n");
+    printf("constantes/CONSTANTES --> Muestra las constantes almacenadas\n");
+    printf("Funciones: \n");
     imprimirTipoTablaSimbolos(TKN_FNC);
+    printf("exit/EXIT --> Salir\n");
 }
 
 
@@ -209,5 +226,21 @@ void loadArchivo(char * archivo){
     }
 }
 
+void addConstante(char * nombre, double n){
+    tipoelem E;
+    E.nombre = (char*)malloc(sizeof(char)*(strlen(nombre)+1));
+    strcpy(E.nombre,nombre);
+    if(existe(nombre)){
+        suprimirElem(nombre);
+    }
+    E.valor.val = n;
+    E.tipo = TKN_CTE;
+    insertarSimbolo(E);
+}
+
+
+void reset(){
+    resetVariables();
+}
 
 

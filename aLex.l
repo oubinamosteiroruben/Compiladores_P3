@@ -37,6 +37,8 @@ RESET "reset"|"RESET"
 CONSTANTES "constantes"|"CONSTANTES"
 LOAD "load"|"LOAD"
 
+DEFINIR "define"|"DEFINE"
+
 IDENTIFICADOR [a-zA-Z_][a-zA-Z0-9_]*
 
 ARCHIVO {IDENTIFICADOR}[.]{IDENTIFICADOR}
@@ -67,6 +69,9 @@ ARCHIVO {IDENTIFICADOR}[.]{IDENTIFICADOR}
             A.valor.nombre = yytext;
             yylval.TKN_ARCHIVO = A;
             return (TKN_ARCHIVO);}
+
+{DEFINIR} {printf("Encontrado TKN_DEFINIR: %s\n",yytext);
+                    return(TKN_DEFINIR);}
             
 {IDENTIFICADOR} {printf("Encontrado identificador: %s\n",yytext);
                 tipoelem E;
@@ -87,9 +92,8 @@ ARCHIVO {IDENTIFICADOR}[.]{IDENTIFICADOR}
                 }else if(E.tipo == TKN_CTE){
                     yylval.TKN_CTE = E;
                     printf("CTE\n");
-                }else{
-                    // Error
                 }
+
                 return E.tipo;
 }
 
@@ -125,13 +129,16 @@ ARCHIVO {IDENTIFICADOR}[.]{IDENTIFICADOR}
 
 
 
-<<EOF>>  { if(stackVacio(TIPO_FD) == TRUE){
-            yyin = stdin; 
-            eliminarElementoStack(TIPO_FD);
-        }else{
-            eliminarElementoStack(TIPO_FD);
-            tipoelempila E = topeStack(TIPO_FD);
-            yyin = E.fd;
-        }}
+<<EOF>>  {  yyin = stdin; 
+            if(stackVacio(TIPO_FD) == FALSE){
+                eliminarElementoStack(TIPO_FD);
+                if(stackVacio(TIPO_FD) == FALSE){
+                    tipoelempila E = topeStack(TIPO_FD);
+                    printf("llego aqui\n");
+                    yyin = E.fd;
+                    printf("llego aqui\n");
+                }
+            }
+        }
 %%
 

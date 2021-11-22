@@ -95,3 +95,23 @@ void imprimirTipoTablaSimbolos(int tipo){
     imprimirInordenTipo(tablaSimbolos,tipo);
 }
 
+
+void _resetTipoInorden(ts tablaSimbolos, int tipo){
+    tipoelem E;
+    if(!es_vacio(tablaSimbolos)){
+        _resetTipoInorden(izq(tablaSimbolos),tipo);
+        leer(tablaSimbolos,&E);
+        if(E.tipo == tipo){
+            suprimir(&tablaSimbolos,E);
+        }
+        _resetTipoInorden(tablaSimbolos,tipo);
+    }
+}
+
+void resetVariables(){
+    _resetTipoInorden(tablaSimbolos,TKN_VAR);
+}
+
+void resetConstantes(){
+    _resetTipoInorden(tablaSimbolos,TKN_CTE);
+}

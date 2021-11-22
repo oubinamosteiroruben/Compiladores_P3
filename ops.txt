@@ -1,0 +1,4 @@
+add funciones.so
+cuadrado(6);
+load ops2.txt
+cuadrado(5);
