@@ -129,15 +129,15 @@ ARCHIVO {IDENTIFICADOR}[.]{IDENTIFICADOR}
 
 
 
-<<EOF>>  {  yyin = stdin; 
-            if(stackVacio(TIPO_FD) == FALSE){
-                eliminarElementoStack(TIPO_FD);
-                if(stackVacio(TIPO_FD) == FALSE){
-                    tipoelempila E = topeStack(TIPO_FD);
-                    printf("llego aqui\n");
-                    yyin = E.fd;
-                    printf("llego aqui\n");
-                }
+<<EOF>>  {  
+            eliminarElementoStack(TIPO_FD);
+            if(stackVacio(TIPO_FD) == TRUE){
+                yyin = stdin;
+                yyrestart(yyin);
+            }else{
+                tipoelempila E = topeStack(TIPO_FD);
+                printf("llego aqui\n");
+                yyin = E.fd;
             }
         }
 %%

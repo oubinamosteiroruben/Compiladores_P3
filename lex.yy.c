@@ -1013,7 +1013,20 @@ YY_RULE_SETUP
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
 #line 132 "aLex.l"
-{  yyin = stdin; 
+{  
+            eliminarElementoStack(TIPO_FD);
+            if(stackVacio(TIPO_FD) == TRUE){
+                yyin = stdin;
+                yyrestart(yyin);
+            }else{
+                tipoelempila E = topeStack(TIPO_FD);
+                printf("llego aqui\n");
+                yyin = E.fd;
+            }
+            
+    
+            /*yyin = stdin; 
+            yyrestart(yyin);
             if(stackVacio(TIPO_FD) == FALSE){
                 eliminarElementoStack(TIPO_FD);
                 if(stackVacio(TIPO_FD) == FALSE){
@@ -1022,15 +1035,15 @@ case YY_STATE_EOF(INITIAL):
                     yyin = E.fd;
                     printf("llego aqui\n");
                 }
-            }
+            }*/
         }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 143 "aLex.l"
+#line 156 "aLex.l"
 ECHO;
 	YY_BREAK
-#line 1034 "lex.yy.c"
+#line 1047 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -2033,7 +2046,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 143 "aLex.l"
+#line 156 "aLex.l"
 
 
 
