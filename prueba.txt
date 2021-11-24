@@ -1,6 +1,3 @@
-a=89*sin(9);
-a=b*9;
-add funciones.so
+1;
 load ops.txt
 help
-exit

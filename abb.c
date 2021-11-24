@@ -30,7 +30,6 @@ tipoclave _clave_elem(tipoelem * E) {
  * comparaciones del resto de la biblioteca y en su lugar
  * cambiando solo esta. */
 int _comparar_claves(tipoclave cl1, tipoclave cl2) {
-    printf("COMPARACION: %s -- %s\n",cl1,cl2);
     return strcmp(cl1,cl2) == 0 ? 0 : strcmp(cl1,cl2) > 0 ? 1 : -1;
 }
 
