@@ -12,8 +12,6 @@
 
     int nLines = 0;
 
-    tipoArchivo A;
-
 %}
 
 
@@ -66,10 +64,6 @@ ARCHIVO {IDENTIFICADOR}[.]{IDENTIFICADOR}
 {CONSTANTES} {printf("Encontrado TKN_GETCTES: %s\n",yytext);
             return(TKN_GETCTES);}
 {ARCHIVO} {printf("Encontrado TKN_ARCHIVO: %s\n",yytext);
-            /*A.valor.nombre = (char*)malloc(sizeof(char)*(strlen(yytext)+1));
-            printf("askldfjalsdjkl\n");
-            strcpy(A.valor.nombre,yytext);
-            printf("askldfjalsdjkl2\n");*/
             yylval.TKN_ARCHIVO = yytext;
             return (TKN_ARCHIVO);}
 
@@ -78,28 +72,26 @@ ARCHIVO {IDENTIFICADOR}[.]{IDENTIFICADOR}
             
 {IDENTIFICADOR} {printf("Encontrado identificador: %s\n",yytext);
                 tipoelem E;
-                E = getElem(yytext);
-                if(E.tipo == NO_TIPO){
-                    printf("\nNO EXISTE EN LA TS\n");
-                    E.tipo = TKN_NOINI;
-                    E.nombre = (char*)malloc(sizeof(char)*(strlen(yytext)+1));
-                    strcpy(E.nombre,yytext);
-                    yylval.TKN_NOINI = E;
-                    insertarSimbolo(E);
-                }else if(E.tipo == TKN_VAR){
-                    yylval.TKN_VAR = E;
-                    printf("NOMBRE E: %s\n",E.nombre);
-                    printf("VAR\n");
-                }else if(E.tipo == TKN_FNC){
-                    yylval.TKN_FNC = E;
-                    printf("FNC\n");
-                }else if(E.tipo == TKN_CTE){
-                    yylval.TKN_CTE = E;
-                    printf("CTE\n");
+                if(existe(yytext)){
+                    E = getElem(yytext);
+                    switch(E.tipo){
+                        case TKN_VAR:
+                            yylval.TKN_VAR = E;
+                            break;
+                        case TKN_CTE:
+                            yylval.TKN_CTE = E;
+                            break;
+                        case TKN_FNC:
+                            yylval.TKN_FNC = E;
+                            break;
+                    }
+                    return E.tipo;
+                }else{
+                    printf("No existe en la tabla de símbolos\n");
+                    yylval.TKN_NOINI = strdup(yytext);
+                    return TKN_NOINI; 
                 }
-                return E.tipo;
 }
-
 
 
 "+" {printf("Encontrado TKN_MAS: %s\n",yytext);

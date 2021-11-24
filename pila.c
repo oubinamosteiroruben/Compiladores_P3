@@ -18,7 +18,6 @@ void crear_pila(pila * P) {
 
 void _destruir_elemPila(tipoelempila E){
 	int tipo = E.tipo;
-	printf("tipo: %d\n",tipo);
 	switch(E.tipo){
 		case TIPO_LIB:
 			dlclose(E.lib);
@@ -56,11 +55,8 @@ tipoelempila tope(pila P) {
 void push(pila * P, tipoelempila E) {
 	pila aux;
 	aux = (pila) malloc(sizeof(struct celdapila));
-	printf("ii\n");
 	aux->elemento = E;
-	printf("ii\n");
 	aux->sig = *P;
-	printf("ii\n");
 	*P = aux;
 }
 

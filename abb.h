@@ -8,11 +8,6 @@
 
 ///////////////////////////////////////INICIO PARTE MODIFICABLE
 
-typedef struct{
-    union{
-        char * nombre;
-    }valor;
-} tipoArchivo;
 
 typedef char * tipoclave;
 
@@ -85,11 +80,11 @@ abb der(abb A);
 void leer(abb A, tipoelem *E);
 
 /**
- * Comprueba si el elemento con clave <cl> existe en el arbol <A>
+ * Comprueba si el elemento con clave <nombre> existe en el arbol <A>
  * @param A
- * @param cl
+ * @param nombre
  */
-unsigned es_miembro(abb A, tipoelem E);
+unsigned es_miembro(abb A, tipoclave nombre);
 //unsigned es_miembro_clave(abb A, tipoclave cl);
 
 /**

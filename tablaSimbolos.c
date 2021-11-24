@@ -8,13 +8,13 @@
 #include <math.h>
 #include "aSin.tab.h"
 
-
 funcion const funciones_reservadas[] = {
     {"sin", sin},
     {"cos", cos},
     {"tan",tan},
     {"exp",exp},
-    {"log",log},
+    {"ln",log},
+    {"log",log10},
     {"sqrt",sqrt},
 };
 
@@ -55,11 +55,8 @@ void crearTablaSimbolos(){
 }
 
 unsigned int existe(char * nombre){
-    tipoelem E;
-    E.nombre = nombre;
-    return es_miembro(tablaSimbolos,E);
+    return es_miembro(tablaSimbolos,nombre);
 }
-
 
 
 void imprimirTablaSimbolos(){
@@ -69,15 +66,16 @@ void imprimirTablaSimbolos(){
 
 tipoelem getElem(char * nombre){
     tipoelem E;
-    E.tipo = NO_TIPO;
     buscar_nodo(tablaSimbolos,nombre, &E);
     return E;
 }
 
 void suprimirElem(char * nombre){
     tipoelem E;
+    E.nombre = (char*)malloc(sizeof(char)*(strlen(nombre)+1));
     strcpy(E.nombre,nombre);
     suprimir(&tablaSimbolos,E);
+    free(E.nombre);
 }
 void imprimirInordenTipo(ts A, int tipo){
     tipoelem E;

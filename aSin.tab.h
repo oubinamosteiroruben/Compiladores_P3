@@ -81,6 +81,8 @@ extern int yydebug;
 union YYSTYPE
 {
 
+  /* TKN_NOINI  */
+  char * TKN_NOINI;
   /* TKN_ARCHIVO  */
   char * TKN_ARCHIVO;
   /* TKN_NUM  */
@@ -101,8 +103,6 @@ union YYSTYPE
   tipoelem TKN_VAR;
   /* TKN_CTE  */
   tipoelem TKN_CTE;
-  /* TKN_NOINI  */
-  tipoelem TKN_NOINI;
 #line 107 "aSin.tab.h" /* yacc.c:1909  */
 };
 

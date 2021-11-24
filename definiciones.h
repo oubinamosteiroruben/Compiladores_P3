@@ -5,7 +5,6 @@
 
 #include <math.h>
 
-#define NO_TIPO 99
 #define FALSE 0
 #define TRUE 1
 #define CONTINUA 2
@@ -21,5 +20,9 @@ typedef struct{
     char const * nombre;
     double valor;
 } constante;
+
+
+
+
 
 #endif

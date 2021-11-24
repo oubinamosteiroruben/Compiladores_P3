@@ -27,6 +27,7 @@
     extern FILE * yyin;
     extern int yylex(void);
     extern int yylex_destroy(void);
+    extern void yyrestart  (FILE * input_file );
 
 %}
 
@@ -38,7 +39,7 @@
 %token <tipoelem> TKN_FNC
 %token <tipoelem> TKN_VAR
 %token <tipoelem> TKN_CTE
-%token <tipoelem> TKN_NOINI
+%token <char *> TKN_NOINI
 %token TKN_MAS
 %token TKN_MENOS
 
@@ -78,15 +79,15 @@ Calculadora_i : Calculadora_i Calculadora;
                 | Calculadora;
 
 Calculadora:    TKN_SALTO
-                |Expresion TKN_SALTO {printf("RESULTADO FINAL\n");}
-                |Expresion TKN_PTOCOMA TKN_SALTO {printf("RESULTADO FINAL: %5.2f\n",$1);}
-                |Otro TKN_SALTO {printf("Otra cosa\n");}  
-                |Otro TKN_PTOCOMA TKN_SALTO {printf("Otra cosa ptocoma\n");}  
-                |Igualacion TKN_SALTO {printf("Igualación\n");}
-                |Igualacion TKN_PTOCOMA TKN_SALTO {printf("Igualación ptocoma\n");} 
+                |Expresion TKN_SALTO
+                |Expresion TKN_PTOCOMA TKN_SALTO {printf("%lf\n",$1);}
+                |Otro TKN_SALTO
+                |Otro TKN_PTOCOMA TKN_SALTO  
+                |Igualacion TKN_SALTO 
+                |Igualacion TKN_PTOCOMA TKN_SALTO {printf("%lf\n",$1);} 
   
 Igualacion: TKN_VAR TKN_IGUAL Expresion {$$ = $3; addElem($1.nombre,$3,TKN_VAR);}
-            |TKN_NOINI TKN_IGUAL Expresion {$$ = $3; addElem($1.nombre,$3,TKN_VAR);}
+            |TKN_NOINI TKN_IGUAL Expresion {$$ = $3; addElem($1,$3,TKN_VAR);}
             |TKN_CTE TKN_IGUAL Expresion {yyerror("constante usada\n"); return 0;};
 
 Expresion:   Expresion TKN_MAS Expr_Mult {$$ = $1+$3;}
@@ -95,7 +96,7 @@ Expresion:   Expresion TKN_MAS Expr_Mult {$$ = $1+$3;}
 ;
 
 Expr_Mult:   Expr_Mult TKN_MULT Expr_Elev {$$=$1*$3;}
-            |Expr_Mult TKN_DIV Expr_Elev {$$=$1/$3; }
+            |Expr_Mult TKN_DIV Expr_Elev {if($3 > 0 || $3 < 0){ $$=$1/$3;}else{ yyerror("math error"); return 0;}}
             |Expr_Elev {$$ = $1;}
 ;
 
@@ -103,11 +104,12 @@ Expr_Elev:  Valor TKN_ELEV Expr_Elev {$$=pow($1,$3);}
             |Valor {$$ = $1;};
 
 Valor:  TKN_PARIZQ Expresion TKN_PARDER {$$=$2;}
-        |TKN_NOINI {yyerror("variable no inicializada"); return 0;}
+        |TKN_NOINI {yyerror("variable no inicializada"); free($1); return 0;}
         |TKN_NUM {$$=$1;}
         |TKN_CTE {$$=$1.valor.val;}
         |TKN_VAR {$$=$1.valor.val;}
-        |TKN_FNC TKN_PARIZQ Expresion TKN_PARDER {printf("NUM: %lf\n",$1.valor.fnc($3)); $$=$1.valor.fnc($3);}
+        |TKN_FNC TKN_PARIZQ Expresion TKN_PARDER {$$=$1.valor.fnc($3);}
+        |TKN_MENOS Expresion {$$=-$2;}
 ;
 
 Otro: TKN_ADD TKN_ARCHIVO {printf("archivo: %s\n",$2);  addFunciones($2);}
@@ -117,8 +119,8 @@ Otro: TKN_ADD TKN_ARCHIVO {printf("archivo: %s\n",$2);  addFunciones($2);}
     | TKN_HELP {printf("Help\n"); imprimirFuncionalidades();}
     | TKN_EXIT {printf("Exit\n"); salir();}
     | TKN_LOAD TKN_ARCHIVO {printf("Load archivo: %s\n",$2);  loadArchivo($2);}
-    | TKN_DEFINIR TKN_NOINI Expresion {printf("Nueva constante: %s\n",$2.nombre); addElem($2.nombre,$3,TKN_CTE);}
-    | TKN_RESET {printf("Reset\n"); reset();}
+    | TKN_DEFINIR TKN_NOINI Expresion {addElem($2,$3,TKN_CTE);}
+    | TKN_RESET {reset();}
 ;
             
 
@@ -126,6 +128,7 @@ Otro: TKN_ADD TKN_ARCHIVO {printf("archivo: %s\n",$2);  addFunciones($2);}
 
 void yyerror(char *s){
     printf("Error %s\n",s);
+    yyrestart(yyin);
 }
 
 void addFunciones(char * archivo){
@@ -226,9 +229,9 @@ void loadArchivo(char * archivo){
 }
 
 void addElem(char * nombre, double n, int tipo){
+    printf("NOMBRE VAR: %s\n",nombre);
     tipoelem E;
-    E.nombre = (char*)malloc(sizeof(char)*(strlen(nombre)+1));
-    strcpy(E.nombre,nombre);
+    E.nombre = nombre;
     E.tipo = tipo;
     E.valor.val = n;
     if(existe(nombre)){

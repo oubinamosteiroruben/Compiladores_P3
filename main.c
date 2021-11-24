@@ -9,18 +9,14 @@
 int main(){
 
     crearTablaSimbolos();
-    printf("HOLA\n");
 
     insertarPalabrasReservadas();
 
     imprimirTablaSimbolos();
     yyin = stdin;
-    int flag;
-    //do{
-        while(1){
-            yyparse();
-        }
-    //}while(flag == CONTINUA);
+    while(1){
+        yyparse();
+    }
 
     return 0;
 }

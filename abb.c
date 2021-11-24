@@ -37,7 +37,6 @@ int _comparar_claves(tipoclave cl1, tipoclave cl2) {
  * destruirse ha de hacerse aqui. El uso de esta funcion
  * permite hacer mas eficiente la destruccion del arbol.*/
 void _destruir_elem(tipoelem *E) {
-    printf("\n\n\nNOMBRE ELIM: %s\n\n\n",E->nombre);
     free(E->nombre);
 }
 
@@ -105,8 +104,8 @@ unsigned _es_miembro_clave(abb A, tipoclave cl) {
     return _es_miembro_clave(A->izq, cl);
 }
 //Funciones públicas
-unsigned es_miembro(abb A, tipoelem E) {
-    return _es_miembro_clave(A, _clave_elem(&E));
+unsigned es_miembro(abb A, tipoclave nombre) {
+    return _es_miembro_clave(A, nombre);
 }
 
 void buscar_nodo(abb A, tipoclave cl, tipoelem *nodo) {
@@ -190,7 +189,6 @@ void suprimir(abb *A, tipoelem E) {
     } else if (es_vacio((*A)->der)) { //pero no es vacio izquierda
         aux = *A;
         *A = (*A)->izq;
-        _destruir_elem(&aux->info);
         free(aux);
     } else { //ni derecha ni izquierda esta vacio, busco mínimo subárbol derecho
         (*A)->info = _suprimir_min(&(*A)->der);
