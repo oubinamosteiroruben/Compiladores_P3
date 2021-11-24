@@ -1320,182 +1320,188 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 6:
+        case 2:
+#line 78 "aSin.y" /* yacc.c:1646  */
+    {if(yyin == stdin) printf(">> ");}
+#line 1327 "aSin.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 6:
 #line 83 "aSin.y" /* yacc.c:1646  */
     {printf("%lf\n",(*(double*)(&yyvsp[-2])));}
-#line 1327 "aSin.tab.c" /* yacc.c:1646  */
+#line 1333 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
 #line 87 "aSin.y" /* yacc.c:1646  */
     {printf("%lf\n",(*(double*)(&yyvsp[-2])));}
-#line 1333 "aSin.tab.c" /* yacc.c:1646  */
+#line 1339 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
 #line 89 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval)) = (*(double*)(&yyvsp[0])); addElem((*(tipoelem*)(&yyvsp[-2])).nombre,(*(double*)(&yyvsp[0])),TKN_VAR);}
-#line 1339 "aSin.tab.c" /* yacc.c:1646  */
+#line 1345 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
 #line 90 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval)) = (*(double*)(&yyvsp[0])); addElem((*(char **)(&yyvsp[-2])),(*(double*)(&yyvsp[0])),TKN_VAR);}
-#line 1345 "aSin.tab.c" /* yacc.c:1646  */
+#line 1351 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
 #line 91 "aSin.y" /* yacc.c:1646  */
     {yyerror("constante usada\n"); return 0;}
-#line 1351 "aSin.tab.c" /* yacc.c:1646  */
+#line 1357 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
 #line 93 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval)) = (*(double*)(&yyvsp[-2]))+(*(double*)(&yyvsp[0]));}
-#line 1357 "aSin.tab.c" /* yacc.c:1646  */
+#line 1363 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
 #line 94 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval)) = (*(double*)(&yyvsp[-2]))-(*(double*)(&yyvsp[0]));}
-#line 1363 "aSin.tab.c" /* yacc.c:1646  */
+#line 1369 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
 #line 95 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval)) = (*(double*)(&yyvsp[0])); }
-#line 1369 "aSin.tab.c" /* yacc.c:1646  */
+#line 1375 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
 #line 98 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval))=(*(double*)(&yyvsp[-2]))*(*(double*)(&yyvsp[0]));}
-#line 1375 "aSin.tab.c" /* yacc.c:1646  */
+#line 1381 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
 #line 99 "aSin.y" /* yacc.c:1646  */
     {if((*(double*)(&yyvsp[0])) > 0 || (*(double*)(&yyvsp[0])) < 0){ (*(double*)(&yyval))=(*(double*)(&yyvsp[-2]))/(*(double*)(&yyvsp[0]));}else{ yyerror("math error"); return 0;}}
-#line 1381 "aSin.tab.c" /* yacc.c:1646  */
+#line 1387 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
 #line 100 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval)) = (*(double*)(&yyvsp[0]));}
-#line 1387 "aSin.tab.c" /* yacc.c:1646  */
+#line 1393 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
 #line 103 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval))=pow((*(double*)(&yyvsp[-2])),(*(double*)(&yyvsp[0])));}
-#line 1393 "aSin.tab.c" /* yacc.c:1646  */
+#line 1399 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
 #line 104 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval)) = (*(double*)(&yyvsp[0]));}
-#line 1399 "aSin.tab.c" /* yacc.c:1646  */
+#line 1405 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
 #line 106 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval))=(*(double*)(&yyvsp[-1]));}
-#line 1405 "aSin.tab.c" /* yacc.c:1646  */
+#line 1411 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
 #line 107 "aSin.y" /* yacc.c:1646  */
     {yyerror("variable no inicializada"); free((*(char **)(&yyvsp[0]))); return 0;}
-#line 1411 "aSin.tab.c" /* yacc.c:1646  */
+#line 1417 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
 #line 108 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval))=(*(double*)(&yyvsp[0]));}
-#line 1417 "aSin.tab.c" /* yacc.c:1646  */
+#line 1423 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
 #line 109 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval))=(*(tipoelem*)(&yyvsp[0])).valor.val;}
-#line 1423 "aSin.tab.c" /* yacc.c:1646  */
+#line 1429 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
 #line 110 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval))=(*(tipoelem*)(&yyvsp[0])).valor.val;}
-#line 1429 "aSin.tab.c" /* yacc.c:1646  */
+#line 1435 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
 #line 111 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval))=(*(tipoelem*)(&yyvsp[-3])).valor.fnc((*(double*)(&yyvsp[-1])));}
-#line 1435 "aSin.tab.c" /* yacc.c:1646  */
+#line 1441 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
 #line 112 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval))=-(*(double*)(&yyvsp[0]));}
-#line 1441 "aSin.tab.c" /* yacc.c:1646  */
+#line 1447 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
 #line 115 "aSin.y" /* yacc.c:1646  */
     {printf("archivo: %s\n",(*(char **)(&yyvsp[0])));  addFunciones((*(char **)(&yyvsp[0])));}
-#line 1447 "aSin.tab.c" /* yacc.c:1646  */
+#line 1453 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
 #line 116 "aSin.y" /* yacc.c:1646  */
     {printf("IMPRIMIR\n"); imprimirTablaSimbolos();}
-#line 1453 "aSin.tab.c" /* yacc.c:1646  */
+#line 1459 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
 #line 117 "aSin.y" /* yacc.c:1646  */
     {printf("Variables\n"); imprimirVariables();}
-#line 1459 "aSin.tab.c" /* yacc.c:1646  */
+#line 1465 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
 #line 118 "aSin.y" /* yacc.c:1646  */
     {printf("Constantes\n"); imprimirConstantes();}
-#line 1465 "aSin.tab.c" /* yacc.c:1646  */
+#line 1471 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
 #line 119 "aSin.y" /* yacc.c:1646  */
     {printf("Help\n"); imprimirFuncionalidades();}
-#line 1471 "aSin.tab.c" /* yacc.c:1646  */
+#line 1477 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
 #line 120 "aSin.y" /* yacc.c:1646  */
     {printf("Exit\n"); salir();}
-#line 1477 "aSin.tab.c" /* yacc.c:1646  */
+#line 1483 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
 #line 121 "aSin.y" /* yacc.c:1646  */
     {printf("Load archivo: %s\n",(*(char **)(&yyvsp[0])));  loadArchivo((*(char **)(&yyvsp[0])));}
-#line 1483 "aSin.tab.c" /* yacc.c:1646  */
+#line 1489 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
 #line 122 "aSin.y" /* yacc.c:1646  */
     {addElem((*(char **)(&yyvsp[-1])),(*(double*)(&yyvsp[0])),TKN_CTE);}
-#line 1489 "aSin.tab.c" /* yacc.c:1646  */
+#line 1495 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
 #line 123 "aSin.y" /* yacc.c:1646  */
     {reset();}
-#line 1495 "aSin.tab.c" /* yacc.c:1646  */
+#line 1501 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1499 "aSin.tab.c" /* yacc.c:1646  */
+#line 1505 "aSin.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1767,7 +1773,6 @@ void addFunciones(char * archivo){
         }else{
             yyerror("fopen");
         }
-        //dlclose(libhandle);
     }
     free(path);
     free(aux);
@@ -1782,15 +1787,15 @@ void imprimirConstantes(){
 }
 
 void imprimirFuncionalidades(){
-    printf("Comandos rapidos:\n");
-    printf("help/HELP --> Muestra las funcionalidades de la aplicacion\n");
-    printf("load/LOAD <archivo> --> Permite cargar operaciones de un archivo\n");
-    printf("add/ADD <archivo> --> Permite cargar nuevas funciones apartir de un archivo\n");
-    printf("variables/VARIABLES --> Muestra las variables almacenadas\n");
-    printf("constantes/CONSTANTES --> Muestra las constantes almacenadas\n");
-    printf("Funciones: \n");
+    printf("---------------------------------Comandos rapidos---------------------------------\n");
+    printf("||\tHELP --> Muestra las funcionalidades de la aplicacion\t\t\t||\n");
+    printf("||\tLOAD <archivo> --> Permite cargar operaciones de un archivo\t\t||\n");
+    printf("||\tADD <archivo> --> Permite cargar nuevas funciones apartir de un archivo\t||\n");
+    printf("||\tVARIABLES --> Muestra las variables almacenadas\t\t\t\t||\n");
+    printf("||\tCONSTANTES --> Muestra las constantes almacenadas\t\t\t||\n");
+    printf("||\tEXIT --> Salir\t\t\t\t\t\t\t\t||\n");
     imprimirTipoTablaSimbolos(TKN_FNC);
-    printf("exit/EXIT --> Salir\n");
+    
 }
 
 

@@ -51,7 +51,6 @@ void insertarSimbolo(tipoelem  E){
 
 void crearTablaSimbolos(){
     crear(&tablaSimbolos);
-    printf("A\n");
 }
 
 unsigned int existe(char * nombre){
@@ -60,7 +59,9 @@ unsigned int existe(char * nombre){
 
 
 void imprimirTablaSimbolos(){
+    printf("----------------------------------Tabla Simbolos----------------------------------\n");
     inorden(tablaSimbolos);   
+    printf("----------------------------------------------------------------------------------\n");
 }
 
 
@@ -94,7 +95,20 @@ void imprimirInordenTipo(ts A, int tipo){
 }
 
 void imprimirTipoTablaSimbolos(int tipo){
+    switch (tipo)
+    {
+    case TKN_VAR:
+        printf("------------------------------------Variables-------------------------------------\n");
+        break;
+    case TKN_CTE:
+        printf("------------------------------------Constantes------------------------------------\n");
+        break;
+    case TKN_FNC:
+        printf("------------------------------------Funciones-------------------------------------\n");
+        break;
+    }
     imprimirInordenTipo(tablaSimbolos,tipo);
+    printf("----------------------------------------------------------------------------------\n");
 }
 
 

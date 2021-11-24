@@ -75,7 +75,7 @@
 
 %%
 
-Calculadora_i : Calculadora_i Calculadora;
+Calculadora_i : Calculadora_i Calculadora {if(yyin == stdin) printf(">> ");};
                 | Calculadora;
 
 Calculadora:    TKN_SALTO
@@ -167,7 +167,6 @@ void addFunciones(char * archivo){
         }else{
             yyerror("fopen");
         }
-        //dlclose(libhandle);
     }
     free(path);
     free(aux);
@@ -182,15 +181,15 @@ void imprimirConstantes(){
 }
 
 void imprimirFuncionalidades(){
-    printf("Comandos rapidos:\n");
-    printf("help/HELP --> Muestra las funcionalidades de la aplicacion\n");
-    printf("load/LOAD <archivo> --> Permite cargar operaciones de un archivo\n");
-    printf("add/ADD <archivo> --> Permite cargar nuevas funciones apartir de un archivo\n");
-    printf("variables/VARIABLES --> Muestra las variables almacenadas\n");
-    printf("constantes/CONSTANTES --> Muestra las constantes almacenadas\n");
-    printf("Funciones: \n");
+    printf("---------------------------------Comandos rapidos---------------------------------\n");
+    printf("||\tHELP --> Muestra las funcionalidades de la aplicacion\t\t\t||\n");
+    printf("||\tLOAD <archivo> --> Permite cargar operaciones de un archivo\t\t||\n");
+    printf("||\tADD <archivo> --> Permite cargar nuevas funciones apartir de un archivo\t||\n");
+    printf("||\tVARIABLES --> Muestra las variables almacenadas\t\t\t\t||\n");
+    printf("||\tCONSTANTES --> Muestra las constantes almacenadas\t\t\t||\n");
+    printf("||\tEXIT --> Salir\t\t\t\t\t\t\t\t||\n");
     imprimirTipoTablaSimbolos(TKN_FNC);
-    printf("exit/EXIT --> Salir\n");
+    
 }
 
 

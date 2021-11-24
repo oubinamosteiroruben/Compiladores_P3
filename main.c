@@ -14,6 +14,7 @@ int main(){
 
     imprimirTablaSimbolos();
     yyin = stdin;
+    printf("\n\n>> \t");
     while(1){
         yyparse();
     }

@@ -37,7 +37,6 @@ int _comparar_claves(tipoclave cl1, tipoclave cl2) {
  * destruirse ha de hacerse aqui. El uso de esta funcion
  * permite hacer mas eficiente la destruccion del arbol.*/
 void _destruir_elem(tipoelem *E) {
-    printf("eliminar nombre: %s\n",E->nombre);
     free(E->nombre);
 }
 
@@ -70,7 +69,20 @@ void inorden(abb A){
 
 
 void imprimir_elem(tipoelem E){
-    printf("Nombre: %s -> Tipo: %d\n",E.nombre,E.tipo);
+    switch (E.tipo)
+    {
+    case TKN_VAR:
+        printf("||\tVariable: %-10s -------> Valor: %-5.3lf %29s||\n",E.nombre, E.valor.val,"");
+        break;
+    case TKN_CTE:
+        printf("||\tConstante: %-10s -------> Valor: %-5.3lf %28s||\n",E.nombre,E.valor.val,"");
+        break;
+    case TKN_FNC:
+        printf("||\tFunción: %-62s ||\n",E.nombre);
+        break;
+    default:
+        break;
+    }
 }
 
 //OPERACIONES DE INFORMACIÓN
