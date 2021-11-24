@@ -12,23 +12,21 @@
 
     #include "stack.h"
 
-    #define MAX 30
-
     void yyerror(char *s);
     void addFunciones(char * archivo);
-    void asignarVariable(char * nombre, double n);
+    void addElem(char * nombre, double n, int tipo);
     void imprimirFuncionalidades();
     void imprimirVariables();
     void imprimirConstantes();
     void destruirLibrerias();
-
-    void destruirLibrerias();
+    void destruirFD();
     void loadArchivo(char * archivo);
-    void addConstante(char * nombre, double n);
     void reset();
+    void salir();
 
     extern FILE * yyin;
     extern int yylex(void);
+    extern int yylex_destroy(void);
 
 %}
 
@@ -66,7 +64,7 @@
 %token TKN_LOAD
 %token TKN_DEFINIR
 
-%token <tipoArchivo> TKN_ARCHIVO
+%token <char *> TKN_ARCHIVO
 
 %type <double> Expresion
 %type <double> Expr_Mult
@@ -87,8 +85,8 @@ Calculadora:    TKN_SALTO
                 |Igualacion TKN_SALTO {printf("Igualación\n");}
                 |Igualacion TKN_PTOCOMA TKN_SALTO {printf("Igualación ptocoma\n");} 
   
-Igualacion: TKN_VAR TKN_IGUAL Expresion {$$ = $3; asignarVariable($1.nombre,$3);}
-            |TKN_NOINI TKN_IGUAL Expresion {$$ = $3; asignarVariable($1.nombre,$3);}
+Igualacion: TKN_VAR TKN_IGUAL Expresion {$$ = $3; addElem($1.nombre,$3,TKN_VAR);}
+            |TKN_NOINI TKN_IGUAL Expresion {$$ = $3; addElem($1.nombre,$3,TKN_VAR);}
             |TKN_CTE TKN_IGUAL Expresion {yyerror("constante usada\n"); return 0;};
 
 Expresion:   Expresion TKN_MAS Expr_Mult {$$ = $1+$3;}
@@ -105,21 +103,21 @@ Expr_Elev:  Valor TKN_ELEV Expr_Elev {$$=pow($1,$3);}
             |Valor {$$ = $1;};
 
 Valor:  TKN_PARIZQ Expresion TKN_PARDER {$$=$2;}
-        |TKN_NOINI {yyerror("variable no inicializada"); free($1.nombre); return 0;}
+        |TKN_NOINI {yyerror("variable no inicializada"); return 0;}
         |TKN_NUM {$$=$1;}
         |TKN_CTE {$$=$1.valor.val;}
         |TKN_VAR {$$=$1.valor.val;}
         |TKN_FNC TKN_PARIZQ Expresion TKN_PARDER {printf("NUM: %lf\n",$1.valor.fnc($3)); $$=$1.valor.fnc($3);}
 ;
 
-Otro: TKN_ADD TKN_ARCHIVO {printf("archivo: %s\n",$2.valor.nombre);  addFunciones($2.valor.nombre);}
+Otro: TKN_ADD TKN_ARCHIVO {printf("archivo: %s\n",$2);  addFunciones($2);}
     | TKN_IMPRIMIR {printf("IMPRIMIR\n"); imprimirTablaSimbolos();}
     | TKN_GETVARS {printf("Variables\n"); imprimirVariables();}
     | TKN_GETCTES {printf("Constantes\n"); imprimirConstantes();}
     | TKN_HELP {printf("Help\n"); imprimirFuncionalidades();}
-    | TKN_EXIT {printf("Exit\n"); destruirLibrerias(); exit(0);}
-    | TKN_LOAD TKN_ARCHIVO {printf("Load archivo: %s\n",$2.valor.nombre); loadArchivo($2.valor.nombre);}
-    | TKN_DEFINIR TKN_NOINI Expresion {printf("Nueva constante: %s\n",$2.nombre); addConstante($2.nombre,$3);}
+    | TKN_EXIT {printf("Exit\n"); salir();}
+    | TKN_LOAD TKN_ARCHIVO {printf("Load archivo: %s\n",$2);  loadArchivo($2);}
+    | TKN_DEFINIR TKN_NOINI Expresion {printf("Nueva constante: %s\n",$2.nombre); addElem($2.nombre,$3,TKN_CTE);}
     | TKN_RESET {printf("Reset\n"); reset();}
 ;
             
@@ -131,39 +129,46 @@ void yyerror(char *s){
 }
 
 void addFunciones(char * archivo){
-    char * archivoAux = (char*)malloc(sizeof(char)*MAX);
+    printf("ARCHIVO: %s\n",archivo);
+    char * aux = (char*)malloc(sizeof(char)*(strlen(archivo)+1));
+    strcpy(aux,archivo);
+    aux = strtok(aux,".");
+    aux = realloc(aux,sizeof(char)*(strlen(aux)+strlen(".txt")+1));
+    strcat(aux,".txt");
+    char * path = (char*)calloc(sizeof(char),(strlen(archivo)+strlen("./")+1));
+    strcpy(path,"./");
+    strcat(path,archivo);
+    printf("PATH: %s\n",path);
+    /*char * archivoAux = (char*)malloc(sizeof(char)*MAX);
     strcpy(archivoAux,archivo);
     strcpy(archivoAux,strtok(archivoAux, "."));
     strcat(archivoAux,".txt");
     char * path = (char*)malloc(sizeof(char)*MAX);
     strcpy(path,"./");
-    strcat(path,archivo);
-    void *libhandle = dlopen("./funciones.so",RTLD_LAZY);
+    strcat(path,archivo);*/
+    void *libhandle = dlopen(path,RTLD_LAZY);
 
     printf("PATH: %s\n",path);
-    printf("ARCH AUX: %s\n",archivoAux);
+    printf("ARCH AUX: %s\n",aux);
     if(!libhandle){
         yyerror("dlopen");
     }else{
         tipoelempila E;
-        printf("eo\n");
         E.tipo = TIPO_LIB;
-        printf("aa\n");
         E.lib = libhandle;
-        printf("bb\n");
         nuevoElemStack(E);
         printf("Abrió bien");
         char nombre[MAX];
         FILE *fd;
-        if(fd = fopen(archivoAux,"r")){
+        if(fd = fopen(aux,"r")){
             while(fscanf(fd,"%[^\n] ", nombre) != EOF){
                 if(!existe(nombre)){
-                    tipoelem * E = (tipoelem *)malloc(sizeof(tipoelem));
-                    E->nombre = (char*)malloc(sizeof(char)*(strlen("cuadrado")+1));
-                    strcpy(E->nombre,"cuadrado");
-                    E->tipo = TKN_FNC;
-                    E->valor.fnc = (accion_t) dlsym(libhandle,"cuadrado");
-                    insertarSimbolo(*E);
+                    tipoelem E;
+                    E.nombre = (char*)calloc(sizeof(char),(strlen("cuadrado")+1));
+                    strcpy(E.nombre,nombre);
+                    E.tipo = TKN_FNC;
+                    E.valor.fnc = (accion_t) dlsym(libhandle,nombre);
+                    insertarSimbolo(E);
                 }else{
                     yyerror("funcion existente");
                 }
@@ -174,18 +179,8 @@ void addFunciones(char * archivo){
         }
         //dlclose(libhandle);
     }
-}
-
-void asignarVariable(char * nombre, double n){
-    tipoelem E;;
-    E.nombre = (char*)malloc(sizeof(char)*(strlen(nombre)+1));
-    strcpy(E.nombre,nombre);
-    if(existe(nombre)){
-        suprimirElem(nombre);
-    }
-    E.valor.val = n;
-    E.tipo = TKN_VAR;
-    insertarSimbolo(E);
+    free(path);
+    free(aux);
 }
 
 void imprimirVariables(){
@@ -213,6 +208,10 @@ void destruirLibrerias(){
     destruirStack(TIPO_LIB);
 }
 
+void destruirFD(){
+    destruirStack(TIPO_FD);
+}
+
 void loadArchivo(char * archivo){
     FILE * fd;
     if(fd=fopen(archivo,"r")){
@@ -226,16 +225,17 @@ void loadArchivo(char * archivo){
     }
 }
 
-void addConstante(char * nombre, double n){
+void addElem(char * nombre, double n, int tipo){
     tipoelem E;
     E.nombre = (char*)malloc(sizeof(char)*(strlen(nombre)+1));
     strcpy(E.nombre,nombre);
-    if(existe(nombre)){
-        suprimirElem(nombre);
-    }
+    E.tipo = tipo;
     E.valor.val = n;
-    E.tipo = TKN_CTE;
-    insertarSimbolo(E);
+    if(existe(nombre)){
+        modificarElem(E);
+    }else{
+        insertarSimbolo(E);
+    }
 }
 
 
@@ -243,4 +243,13 @@ void reset(){
     resetVariables();
 }
 
-
+void salir(){
+    yyin = stdin;
+    yyrestart(yyin);
+    destruirLibrerias(); 
+    destruirFD(); 
+    destruirTablaSimbolos(); 
+    fclose(yyin);
+    yylex_destroy();
+    exit(0);
+}

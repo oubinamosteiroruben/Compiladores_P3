@@ -81,6 +81,8 @@ extern int yydebug;
 union YYSTYPE
 {
 
+  /* TKN_ARCHIVO  */
+  char * TKN_ARCHIVO;
   /* TKN_NUM  */
   double TKN_NUM;
   /* Igualacion  */
@@ -93,8 +95,6 @@ union YYSTYPE
   double Expr_Elev;
   /* Valor  */
   double Valor;
-  /* TKN_ARCHIVO  */
-  tipoArchivo TKN_ARCHIVO;
   /* TKN_FNC  */
   tipoelem TKN_FNC;
   /* TKN_VAR  */

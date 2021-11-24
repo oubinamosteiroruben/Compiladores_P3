@@ -77,26 +77,24 @@
 
     #include "stack.h"
 
-    #define MAX 30
-
     void yyerror(char *s);
     void addFunciones(char * archivo);
-    void asignarVariable(char * nombre, double n);
+    void addElem(char * nombre, double n, int tipo);
     void imprimirFuncionalidades();
     void imprimirVariables();
     void imprimirConstantes();
     void destruirLibrerias();
-
-    void destruirLibrerias();
+    void destruirFD();
     void loadArchivo(char * archivo);
-    void addConstante(char * nombre, double n);
     void reset();
+    void salir();
 
     extern FILE * yyin;
     extern int yylex(void);
+    extern int yylex_destroy(void);
 
 
-#line 100 "aSin.tab.c" /* yacc.c:339  */
+#line 98 "aSin.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -167,6 +165,8 @@ extern int yydebug;
 union YYSTYPE
 {
 
+  /* TKN_ARCHIVO  */
+  char * TKN_ARCHIVO;
   /* TKN_NUM  */
   double TKN_NUM;
   /* Igualacion  */
@@ -179,8 +179,6 @@ union YYSTYPE
   double Expr_Elev;
   /* Valor  */
   double Valor;
-  /* TKN_ARCHIVO  */
-  tipoArchivo TKN_ARCHIVO;
   /* TKN_FNC  */
   tipoelem TKN_FNC;
   /* TKN_VAR  */
@@ -189,7 +187,7 @@ union YYSTYPE
   tipoelem TKN_CTE;
   /* TKN_NOINI  */
   tipoelem TKN_NOINI;
-#line 193 "aSin.tab.c" /* yacc.c:355  */
+#line 191 "aSin.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -206,7 +204,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 210 "aSin.tab.c" /* yacc.c:358  */
+#line 208 "aSin.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -506,10 +504,10 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    79,    79,    80,    82,    83,    84,    85,    86,    87,
-      88,    90,    91,    92,    94,    95,    96,    99,   100,   101,
-     104,   105,   107,   108,   109,   110,   111,   112,   115,   116,
-     117,   118,   119,   120,   121,   122,   123
+       0,    77,    77,    78,    80,    81,    82,    83,    84,    85,
+      86,    88,    89,    90,    92,    93,    94,    97,    98,    99,
+     102,   103,   105,   106,   107,   108,   109,   110,   113,   114,
+     115,   116,   117,   118,   119,   120,   121
 };
 #endif
 
@@ -1322,199 +1320,199 @@ yyreduce:
   switch (yyn)
     {
         case 5:
-#line 83 "aSin.y" /* yacc.c:1646  */
+#line 81 "aSin.y" /* yacc.c:1646  */
     {printf("RESULTADO FINAL\n");}
-#line 1328 "aSin.tab.c" /* yacc.c:1646  */
+#line 1326 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 84 "aSin.y" /* yacc.c:1646  */
+#line 82 "aSin.y" /* yacc.c:1646  */
     {printf("RESULTADO FINAL: %5.2f\n",(*(double*)(&yyvsp[-2])));}
-#line 1334 "aSin.tab.c" /* yacc.c:1646  */
+#line 1332 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 85 "aSin.y" /* yacc.c:1646  */
+#line 83 "aSin.y" /* yacc.c:1646  */
     {printf("Otra cosa\n");}
-#line 1340 "aSin.tab.c" /* yacc.c:1646  */
+#line 1338 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 86 "aSin.y" /* yacc.c:1646  */
+#line 84 "aSin.y" /* yacc.c:1646  */
     {printf("Otra cosa ptocoma\n");}
-#line 1346 "aSin.tab.c" /* yacc.c:1646  */
+#line 1344 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 87 "aSin.y" /* yacc.c:1646  */
+#line 85 "aSin.y" /* yacc.c:1646  */
     {printf("Igualación\n");}
-#line 1352 "aSin.tab.c" /* yacc.c:1646  */
+#line 1350 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 88 "aSin.y" /* yacc.c:1646  */
+#line 86 "aSin.y" /* yacc.c:1646  */
     {printf("Igualación ptocoma\n");}
-#line 1358 "aSin.tab.c" /* yacc.c:1646  */
+#line 1356 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 90 "aSin.y" /* yacc.c:1646  */
-    {(*(double*)(&yyval)) = (*(double*)(&yyvsp[0])); asignarVariable((*(tipoelem*)(&yyvsp[-2])).nombre,(*(double*)(&yyvsp[0])));}
-#line 1364 "aSin.tab.c" /* yacc.c:1646  */
+#line 88 "aSin.y" /* yacc.c:1646  */
+    {(*(double*)(&yyval)) = (*(double*)(&yyvsp[0])); addElem((*(tipoelem*)(&yyvsp[-2])).nombre,(*(double*)(&yyvsp[0])),TKN_VAR);}
+#line 1362 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 91 "aSin.y" /* yacc.c:1646  */
-    {(*(double*)(&yyval)) = (*(double*)(&yyvsp[0])); asignarVariable((*(tipoelem*)(&yyvsp[-2])).nombre,(*(double*)(&yyvsp[0])));}
-#line 1370 "aSin.tab.c" /* yacc.c:1646  */
+#line 89 "aSin.y" /* yacc.c:1646  */
+    {(*(double*)(&yyval)) = (*(double*)(&yyvsp[0])); addElem((*(tipoelem*)(&yyvsp[-2])).nombre,(*(double*)(&yyvsp[0])),TKN_VAR);}
+#line 1368 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 92 "aSin.y" /* yacc.c:1646  */
+#line 90 "aSin.y" /* yacc.c:1646  */
     {yyerror("constante usada\n"); return 0;}
-#line 1376 "aSin.tab.c" /* yacc.c:1646  */
+#line 1374 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 94 "aSin.y" /* yacc.c:1646  */
+#line 92 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval)) = (*(double*)(&yyvsp[-2]))+(*(double*)(&yyvsp[0]));}
-#line 1382 "aSin.tab.c" /* yacc.c:1646  */
+#line 1380 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 95 "aSin.y" /* yacc.c:1646  */
+#line 93 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval)) = (*(double*)(&yyvsp[-2]))-(*(double*)(&yyvsp[0]));}
-#line 1388 "aSin.tab.c" /* yacc.c:1646  */
+#line 1386 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 96 "aSin.y" /* yacc.c:1646  */
+#line 94 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval)) = (*(double*)(&yyvsp[0])); }
-#line 1394 "aSin.tab.c" /* yacc.c:1646  */
+#line 1392 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 99 "aSin.y" /* yacc.c:1646  */
+#line 97 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval))=(*(double*)(&yyvsp[-2]))*(*(double*)(&yyvsp[0]));}
-#line 1400 "aSin.tab.c" /* yacc.c:1646  */
+#line 1398 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 100 "aSin.y" /* yacc.c:1646  */
+#line 98 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval))=(*(double*)(&yyvsp[-2]))/(*(double*)(&yyvsp[0])); }
-#line 1406 "aSin.tab.c" /* yacc.c:1646  */
+#line 1404 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 101 "aSin.y" /* yacc.c:1646  */
+#line 99 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval)) = (*(double*)(&yyvsp[0]));}
-#line 1412 "aSin.tab.c" /* yacc.c:1646  */
+#line 1410 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 104 "aSin.y" /* yacc.c:1646  */
+#line 102 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval))=pow((*(double*)(&yyvsp[-2])),(*(double*)(&yyvsp[0])));}
-#line 1418 "aSin.tab.c" /* yacc.c:1646  */
+#line 1416 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 105 "aSin.y" /* yacc.c:1646  */
+#line 103 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval)) = (*(double*)(&yyvsp[0]));}
-#line 1424 "aSin.tab.c" /* yacc.c:1646  */
+#line 1422 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 107 "aSin.y" /* yacc.c:1646  */
+#line 105 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval))=(*(double*)(&yyvsp[-1]));}
-#line 1430 "aSin.tab.c" /* yacc.c:1646  */
+#line 1428 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 108 "aSin.y" /* yacc.c:1646  */
-    {yyerror("variable no inicializada"); free((*(tipoelem*)(&yyvsp[0])).nombre); return 0;}
-#line 1436 "aSin.tab.c" /* yacc.c:1646  */
+#line 106 "aSin.y" /* yacc.c:1646  */
+    {yyerror("variable no inicializada"); return 0;}
+#line 1434 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 109 "aSin.y" /* yacc.c:1646  */
+#line 107 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval))=(*(double*)(&yyvsp[0]));}
-#line 1442 "aSin.tab.c" /* yacc.c:1646  */
+#line 1440 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 110 "aSin.y" /* yacc.c:1646  */
+#line 108 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval))=(*(tipoelem*)(&yyvsp[0])).valor.val;}
-#line 1448 "aSin.tab.c" /* yacc.c:1646  */
+#line 1446 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 111 "aSin.y" /* yacc.c:1646  */
+#line 109 "aSin.y" /* yacc.c:1646  */
     {(*(double*)(&yyval))=(*(tipoelem*)(&yyvsp[0])).valor.val;}
-#line 1454 "aSin.tab.c" /* yacc.c:1646  */
+#line 1452 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 112 "aSin.y" /* yacc.c:1646  */
+#line 110 "aSin.y" /* yacc.c:1646  */
     {printf("NUM: %lf\n",(*(tipoelem*)(&yyvsp[-3])).valor.fnc((*(double*)(&yyvsp[-1])))); (*(double*)(&yyval))=(*(tipoelem*)(&yyvsp[-3])).valor.fnc((*(double*)(&yyvsp[-1])));}
-#line 1460 "aSin.tab.c" /* yacc.c:1646  */
+#line 1458 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 115 "aSin.y" /* yacc.c:1646  */
-    {printf("archivo: %s\n",(*(tipoArchivo*)(&yyvsp[0])).valor.nombre);  addFunciones((*(tipoArchivo*)(&yyvsp[0])).valor.nombre);}
-#line 1466 "aSin.tab.c" /* yacc.c:1646  */
+#line 113 "aSin.y" /* yacc.c:1646  */
+    {printf("archivo: %s\n",(*(char **)(&yyvsp[0])));  addFunciones((*(char **)(&yyvsp[0])));}
+#line 1464 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 116 "aSin.y" /* yacc.c:1646  */
+#line 114 "aSin.y" /* yacc.c:1646  */
     {printf("IMPRIMIR\n"); imprimirTablaSimbolos();}
-#line 1472 "aSin.tab.c" /* yacc.c:1646  */
+#line 1470 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 117 "aSin.y" /* yacc.c:1646  */
+#line 115 "aSin.y" /* yacc.c:1646  */
     {printf("Variables\n"); imprimirVariables();}
-#line 1478 "aSin.tab.c" /* yacc.c:1646  */
+#line 1476 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 118 "aSin.y" /* yacc.c:1646  */
+#line 116 "aSin.y" /* yacc.c:1646  */
     {printf("Constantes\n"); imprimirConstantes();}
-#line 1484 "aSin.tab.c" /* yacc.c:1646  */
+#line 1482 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 119 "aSin.y" /* yacc.c:1646  */
+#line 117 "aSin.y" /* yacc.c:1646  */
     {printf("Help\n"); imprimirFuncionalidades();}
-#line 1490 "aSin.tab.c" /* yacc.c:1646  */
+#line 1488 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 120 "aSin.y" /* yacc.c:1646  */
-    {printf("Exit\n"); destruirLibrerias(); exit(0);}
-#line 1496 "aSin.tab.c" /* yacc.c:1646  */
+#line 118 "aSin.y" /* yacc.c:1646  */
+    {printf("Exit\n"); salir();}
+#line 1494 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 121 "aSin.y" /* yacc.c:1646  */
-    {printf("Load archivo: %s\n",(*(tipoArchivo*)(&yyvsp[0])).valor.nombre); loadArchivo((*(tipoArchivo*)(&yyvsp[0])).valor.nombre);}
-#line 1502 "aSin.tab.c" /* yacc.c:1646  */
+#line 119 "aSin.y" /* yacc.c:1646  */
+    {printf("Load archivo: %s\n",(*(char **)(&yyvsp[0])));  loadArchivo((*(char **)(&yyvsp[0])));}
+#line 1500 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 122 "aSin.y" /* yacc.c:1646  */
-    {printf("Nueva constante: %s\n",(*(tipoelem*)(&yyvsp[-1])).nombre); addConstante((*(tipoelem*)(&yyvsp[-1])).nombre,(*(double*)(&yyvsp[0])));}
-#line 1508 "aSin.tab.c" /* yacc.c:1646  */
+#line 120 "aSin.y" /* yacc.c:1646  */
+    {printf("Nueva constante: %s\n",(*(tipoelem*)(&yyvsp[-1])).nombre); addElem((*(tipoelem*)(&yyvsp[-1])).nombre,(*(double*)(&yyvsp[0])),TKN_CTE);}
+#line 1506 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 123 "aSin.y" /* yacc.c:1646  */
+#line 121 "aSin.y" /* yacc.c:1646  */
     {printf("Reset\n"); reset();}
-#line 1514 "aSin.tab.c" /* yacc.c:1646  */
+#line 1512 "aSin.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1518 "aSin.tab.c" /* yacc.c:1646  */
+#line 1516 "aSin.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1742,7 +1740,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 127 "aSin.y" /* yacc.c:1906  */
+#line 125 "aSin.y" /* yacc.c:1906  */
 
 
 void yyerror(char *s){
@@ -1750,39 +1748,46 @@ void yyerror(char *s){
 }
 
 void addFunciones(char * archivo){
-    char * archivoAux = (char*)malloc(sizeof(char)*MAX);
+    printf("ARCHIVO: %s\n",archivo);
+    char * aux = (char*)malloc(sizeof(char)*(strlen(archivo)+1));
+    strcpy(aux,archivo);
+    aux = strtok(aux,".");
+    aux = realloc(aux,sizeof(char)*(strlen(aux)+strlen(".txt")+1));
+    strcat(aux,".txt");
+    char * path = (char*)calloc(sizeof(char),(strlen(archivo)+strlen("./")+1));
+    strcpy(path,"./");
+    strcat(path,archivo);
+    printf("PATH: %s\n",path);
+    /*char * archivoAux = (char*)malloc(sizeof(char)*MAX);
     strcpy(archivoAux,archivo);
     strcpy(archivoAux,strtok(archivoAux, "."));
     strcat(archivoAux,".txt");
     char * path = (char*)malloc(sizeof(char)*MAX);
     strcpy(path,"./");
-    strcat(path,archivo);
-    void *libhandle = dlopen("./funciones.so",RTLD_LAZY);
+    strcat(path,archivo);*/
+    void *libhandle = dlopen(path,RTLD_LAZY);
 
     printf("PATH: %s\n",path);
-    printf("ARCH AUX: %s\n",archivoAux);
+    printf("ARCH AUX: %s\n",aux);
     if(!libhandle){
         yyerror("dlopen");
     }else{
         tipoelempila E;
-        printf("eo\n");
         E.tipo = TIPO_LIB;
-        printf("aa\n");
         E.lib = libhandle;
-        printf("bb\n");
         nuevoElemStack(E);
         printf("Abrió bien");
         char nombre[MAX];
         FILE *fd;
-        if(fd = fopen(archivoAux,"r")){
+        if(fd = fopen(aux,"r")){
             while(fscanf(fd,"%[^\n] ", nombre) != EOF){
                 if(!existe(nombre)){
-                    tipoelem * E = (tipoelem *)malloc(sizeof(tipoelem));
-                    E->nombre = (char*)malloc(sizeof(char)*(strlen("cuadrado")+1));
-                    strcpy(E->nombre,"cuadrado");
-                    E->tipo = TKN_FNC;
-                    E->valor.fnc = (accion_t) dlsym(libhandle,"cuadrado");
-                    insertarSimbolo(*E);
+                    tipoelem E;
+                    E.nombre = (char*)calloc(sizeof(char),(strlen("cuadrado")+1));
+                    strcpy(E.nombre,nombre);
+                    E.tipo = TKN_FNC;
+                    E.valor.fnc = (accion_t) dlsym(libhandle,nombre);
+                    insertarSimbolo(E);
                 }else{
                     yyerror("funcion existente");
                 }
@@ -1793,18 +1798,8 @@ void addFunciones(char * archivo){
         }
         //dlclose(libhandle);
     }
-}
-
-void asignarVariable(char * nombre, double n){
-    tipoelem E;;
-    E.nombre = (char*)malloc(sizeof(char)*(strlen(nombre)+1));
-    strcpy(E.nombre,nombre);
-    if(existe(nombre)){
-        suprimirElem(nombre);
-    }
-    E.valor.val = n;
-    E.tipo = TKN_VAR;
-    insertarSimbolo(E);
+    free(path);
+    free(aux);
 }
 
 void imprimirVariables(){
@@ -1832,6 +1827,10 @@ void destruirLibrerias(){
     destruirStack(TIPO_LIB);
 }
 
+void destruirFD(){
+    destruirStack(TIPO_FD);
+}
+
 void loadArchivo(char * archivo){
     FILE * fd;
     if(fd=fopen(archivo,"r")){
@@ -1845,16 +1844,17 @@ void loadArchivo(char * archivo){
     }
 }
 
-void addConstante(char * nombre, double n){
+void addElem(char * nombre, double n, int tipo){
     tipoelem E;
     E.nombre = (char*)malloc(sizeof(char)*(strlen(nombre)+1));
     strcpy(E.nombre,nombre);
-    if(existe(nombre)){
-        suprimirElem(nombre);
-    }
+    E.tipo = tipo;
     E.valor.val = n;
-    E.tipo = TKN_CTE;
-    insertarSimbolo(E);
+    if(existe(nombre)){
+        modificarElem(E);
+    }else{
+        insertarSimbolo(E);
+    }
 }
 
 
@@ -1862,4 +1862,13 @@ void reset(){
     resetVariables();
 }
 
-
+void salir(){
+    yyin = stdin;
+    yyrestart(yyin);
+    destruirLibrerias(); 
+    destruirFD(); 
+    destruirTablaSimbolos(); 
+    fclose(yyin);
+    yylex_destroy();
+    exit(0);
+}

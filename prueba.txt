@@ -1,0 +1,6 @@
+a=89*sin(9);
+a=b*9;
+add funciones.so
+load ops.txt
+help
+exit

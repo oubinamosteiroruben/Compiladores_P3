@@ -66,8 +66,11 @@ ARCHIVO {IDENTIFICADOR}[.]{IDENTIFICADOR}
 {CONSTANTES} {printf("Encontrado TKN_GETCTES: %s\n",yytext);
             return(TKN_GETCTES);}
 {ARCHIVO} {printf("Encontrado TKN_ARCHIVO: %s\n",yytext);
-            A.valor.nombre = yytext;
-            yylval.TKN_ARCHIVO = A;
+            /*A.valor.nombre = (char*)malloc(sizeof(char)*(strlen(yytext)+1));
+            printf("askldfjalsdjkl\n");
+            strcpy(A.valor.nombre,yytext);
+            printf("askldfjalsdjkl2\n");*/
+            yylval.TKN_ARCHIVO = yytext;
             return (TKN_ARCHIVO);}
 
 {DEFINIR} {printf("Encontrado TKN_DEFINIR: %s\n",yytext);
@@ -82,6 +85,7 @@ ARCHIVO {IDENTIFICADOR}[.]{IDENTIFICADOR}
                     E.nombre = (char*)malloc(sizeof(char)*(strlen(yytext)+1));
                     strcpy(E.nombre,yytext);
                     yylval.TKN_NOINI = E;
+                    insertarSimbolo(E);
                 }else if(E.tipo == TKN_VAR){
                     yylval.TKN_VAR = E;
                     printf("NOMBRE E: %s\n",E.nombre);
@@ -93,7 +97,6 @@ ARCHIVO {IDENTIFICADOR}[.]{IDENTIFICADOR}
                     yylval.TKN_CTE = E;
                     printf("CTE\n");
                 }
-
                 return E.tipo;
 }
 

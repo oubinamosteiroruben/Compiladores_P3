@@ -10,6 +10,7 @@
 #define TRUE 1
 #define CONTINUA 2
 #define FIN 3
+#define MAX 30
 
 typedef struct {
     char const * nombre;
@@ -20,11 +21,5 @@ typedef struct{
     char const * nombre;
     double valor;
 } constante;
-
-typedef struct{
-    union{
-        char * nombre;
-    }valor;
-} archivo;
 
 #endif

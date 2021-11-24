@@ -115,3 +115,11 @@ void resetVariables(){
 void resetConstantes(){
     _resetTipoInorden(tablaSimbolos,TKN_CTE);
 }
+
+void modificarElem(tipoelem E){
+    modificar(tablaSimbolos, E);
+}
+
+void destruirTablaSimbolos(){
+    destruir(&tablaSimbolos);
+}

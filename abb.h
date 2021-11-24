@@ -127,8 +127,18 @@ void suprimir(abb *A, tipoelem E);
  */
 void modificar(abb A, tipoelem nodo);
 
+/**
+ * 
+ * Recorrido inorden del arbol indicado
+ * @param A
+ * */
 
 void inorden(abb A);
+
+/**
+ * Imprimir Información de un elemento
+ * @param E
+ * */
 
 void imprimir_elem(tipoelem E);
 

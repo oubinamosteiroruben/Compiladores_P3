@@ -70,4 +70,18 @@ void resetVariables();
 
 void resetConstantes();
 
+/**
+ * 
+ * Modificar Elem en la tabla de símbolos
+ * @param E
+ * 
+ * */
+void modificarElem(tipoelem E);
+
+/**
+ * 
+ * Destruir tabla de símbolos
+ * */
+void destruirTablaSimbolos(); 
+
 #endif

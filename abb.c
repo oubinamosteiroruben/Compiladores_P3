@@ -37,6 +37,7 @@ int _comparar_claves(tipoclave cl1, tipoclave cl2) {
  * destruirse ha de hacerse aqui. El uso de esta funcion
  * permite hacer mas eficiente la destruccion del arbol.*/
 void _destruir_elem(tipoelem *E) {
+    printf("\n\n\nNOMBRE ELIM: %s\n\n\n",E->nombre);
     free(E->nombre);
 }
 
@@ -204,6 +205,7 @@ void _modificar(abb A, tipoclave cl, tipoelem nodo) {
     }
     int comp = _comparar_clave_elem(cl, A->info);
     if (comp == 0) {
+        _destruir_elem(&(A->info));
         A->info = nodo;
     } else if (comp < 0) {
         _modificar(A->izq, cl, nodo);
