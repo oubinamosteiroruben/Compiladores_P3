@@ -30,6 +30,7 @@ tipoclave _clave_elem(tipoelem * E) {
  * comparaciones del resto de la biblioteca y en su lugar
  * cambiando solo esta. */
 int _comparar_claves(tipoclave cl1, tipoclave cl2) {
+    printf("COMPARACION: %s -- %s\n",cl1,cl2);
     return strcmp(cl1,cl2) == 0 ? 0 : strcmp(cl1,cl2) > 0 ? 1 : -1;
 }
 
@@ -37,6 +38,7 @@ int _comparar_claves(tipoclave cl1, tipoclave cl2) {
  * destruirse ha de hacerse aqui. El uso de esta funcion
  * permite hacer mas eficiente la destruccion del arbol.*/
 void _destruir_elem(tipoelem *E) {
+    printf("eliminar nombre: %s\n",E->nombre);
     free(E->nombre);
 }
 
@@ -170,6 +172,7 @@ void suprimir(abb *A, tipoelem E) {
     if (es_vacio(*A)) {
         return;
     }
+    printf("VALOR dentro supr:%s\n",E.nombre);
 
     tipoclave cl = _clave_elem(&E);
     int comp = _comparar_clave_elem(cl, (*A)->info);

@@ -86,9 +86,9 @@ Calculadora:    TKN_SALTO
                 |Igualacion TKN_SALTO 
                 |Igualacion TKN_PTOCOMA TKN_SALTO {printf("%lf\n",$1);} 
   
-Igualacion: TKN_VAR TKN_IGUAL Expresion {$$ = $3; addElem($1.nombre,$3,TKN_VAR);}
-            |TKN_NOINI TKN_IGUAL Expresion {$$ = $3; addElem($1,$3,TKN_VAR);}
-            |TKN_CTE TKN_IGUAL Expresion {yyerror("constante usada\n"); return 0;};
+Igualacion:     TKN_VAR TKN_IGUAL Expresion {$$ = $3; addElem($1.nombre,$3,TKN_VAR);}
+                |TKN_NOINI TKN_IGUAL Expresion {$$ = $3; addElem($1,$3,TKN_VAR);}
+                |TKN_CTE TKN_IGUAL Expresion {yyerror("constante usada\n"); return 0;};
 
 Expresion:   Expresion TKN_MAS Expr_Mult {$$ = $1+$3;}
             |Expresion TKN_MENOS Expr_Mult {$$ = $1-$3;}
@@ -132,7 +132,6 @@ void yyerror(char *s){
 }
 
 void addFunciones(char * archivo){
-    printf("ARCHIVO: %s\n",archivo);
     char * aux = (char*)malloc(sizeof(char)*(strlen(archivo)+1));
     strcpy(aux,archivo);
     aux = strtok(aux,".");
@@ -141,18 +140,7 @@ void addFunciones(char * archivo){
     char * path = (char*)calloc(sizeof(char),(strlen(archivo)+strlen("./")+1));
     strcpy(path,"./");
     strcat(path,archivo);
-    printf("PATH: %s\n",path);
-    /*char * archivoAux = (char*)malloc(sizeof(char)*MAX);
-    strcpy(archivoAux,archivo);
-    strcpy(archivoAux,strtok(archivoAux, "."));
-    strcat(archivoAux,".txt");
-    char * path = (char*)malloc(sizeof(char)*MAX);
-    strcpy(path,"./");
-    strcat(path,archivo);*/
     void *libhandle = dlopen(path,RTLD_LAZY);
-
-    printf("PATH: %s\n",path);
-    printf("ARCH AUX: %s\n",aux);
     if(!libhandle){
         yyerror("dlopen");
     }else{
@@ -160,7 +148,6 @@ void addFunciones(char * archivo){
         E.tipo = TIPO_LIB;
         E.lib = libhandle;
         nuevoElemStack(E);
-        printf("Abrió bien");
         char nombre[MAX];
         FILE *fd;
         if(fd = fopen(aux,"r")){

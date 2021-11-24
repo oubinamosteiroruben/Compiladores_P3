@@ -17,7 +17,6 @@ void crear_pila(pila * P) {
 }
 
 void _destruir_elemPila(tipoelempila E){
-	int tipo = E.tipo;
 	switch(E.tipo){
 		case TIPO_LIB:
 			dlclose(E.lib);

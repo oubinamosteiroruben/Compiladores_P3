@@ -80,12 +80,16 @@ void suprimirElem(char * nombre){
 void imprimirInordenTipo(ts A, int tipo){
     tipoelem E;
     if(!es_vacio(A)){
-        imprimirInordenTipo(izq(A),tipo);
+        if(!es_vacio(izq(A))){
+            imprimirInordenTipo(izq(A),tipo);
+        }
         leer(A,&E);
         if(E.tipo == tipo){
             imprimir_elem(E);
         }
-        imprimirInordenTipo(der(A),tipo);
+        if(!es_vacio(der(A))){
+            imprimirInordenTipo(der(A),tipo);
+        }
     }
 }
 
@@ -94,15 +98,22 @@ void imprimirTipoTablaSimbolos(int tipo){
 }
 
 
-void _resetTipoInorden(ts tablaSimbolos, int tipo){
+void _resetTipoInorden(ts t, int tipo){
     tipoelem E;
-    if(!es_vacio(tablaSimbolos)){
-        _resetTipoInorden(izq(tablaSimbolos),tipo);
-        leer(tablaSimbolos,&E);
-        if(E.tipo == tipo){
-            suprimir(&tablaSimbolos,E);
+    if(!es_vacio(t)){
+        if(!es_vacio(izq(t))){
+            _resetTipoInorden(izq(t),tipo);
         }
-        _resetTipoInorden(tablaSimbolos,tipo);
+        leer(t,&E);
+        if(E.tipo == tipo){
+            imprimir_elem(E);
+            printf("Eliminar: %s\n",E.nombre);
+            suprimir(&t,E);
+            printf("fjlsjsl\n");
+        }
+        if(!es_vacio(der(t))){
+             _resetTipoInorden(der(t),tipo);
+        }
     }
 }
 

@@ -1732,7 +1732,6 @@ void yyerror(char *s){
 }
 
 void addFunciones(char * archivo){
-    printf("ARCHIVO: %s\n",archivo);
     char * aux = (char*)malloc(sizeof(char)*(strlen(archivo)+1));
     strcpy(aux,archivo);
     aux = strtok(aux,".");
@@ -1741,18 +1740,7 @@ void addFunciones(char * archivo){
     char * path = (char*)calloc(sizeof(char),(strlen(archivo)+strlen("./")+1));
     strcpy(path,"./");
     strcat(path,archivo);
-    printf("PATH: %s\n",path);
-    /*char * archivoAux = (char*)malloc(sizeof(char)*MAX);
-    strcpy(archivoAux,archivo);
-    strcpy(archivoAux,strtok(archivoAux, "."));
-    strcat(archivoAux,".txt");
-    char * path = (char*)malloc(sizeof(char)*MAX);
-    strcpy(path,"./");
-    strcat(path,archivo);*/
     void *libhandle = dlopen(path,RTLD_LAZY);
-
-    printf("PATH: %s\n",path);
-    printf("ARCH AUX: %s\n",aux);
     if(!libhandle){
         yyerror("dlopen");
     }else{
@@ -1760,7 +1748,6 @@ void addFunciones(char * archivo){
         E.tipo = TIPO_LIB;
         E.lib = libhandle;
         nuevoElemStack(E);
-        printf("Abrió bien");
         char nombre[MAX];
         FILE *fd;
         if(fd = fopen(aux,"r")){
