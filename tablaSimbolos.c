@@ -8,6 +8,8 @@
 #include <math.h>
 #include "aSin.tab.h"
 
+// Funciones iniciales
+
 funcion const funciones_reservadas[] = {
     {"sin", sin},
     {"cos", cos},
@@ -18,16 +20,20 @@ funcion const funciones_reservadas[] = {
     {"sqrt",sqrt},
 };
 
+// Constantes iniciales
+
 constante const constantes_reservadas[] = {
     {"e", M_E},
     {"pi",M_PI},
 };
 
+// Tabla de símbolos
 ts tablaSimbolos;
 
 // Función que carga todas las palabras reservadas, calcula su vu valor (Componente Léxico), y las inserta en la tabla
 void insertarPalabrasReservadas(){
     tipoelem E;
+    // Se insertan las funciones
     for(int i = 0; i<sizeof(funciones_reservadas)/sizeof(funciones_reservadas[0]); i++){
         E.nombre = (char*)malloc(sizeof(char)*(strlen(funciones_reservadas[i].nombre)+1));
         strcpy(E.nombre,funciones_reservadas[i].nombre);
@@ -35,7 +41,7 @@ void insertarPalabrasReservadas(){
         E.valor.fnc = funciones_reservadas[i].accion;
         insertarSimbolo(E);
     }
-
+    // Se insertan las constantes
     for(int i = 0; i<sizeof(constantes_reservadas)/sizeof(constantes_reservadas[1]); i++){
         E.nombre = (char*)malloc(sizeof(char)*(strlen(constantes_reservadas[i].nombre)+1));
         strcpy(E.nombre,constantes_reservadas[i].nombre);

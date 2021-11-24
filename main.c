@@ -6,16 +6,20 @@
 #include "lex.yy.c"
 #include "aSin.tab.h"
 
+extern void imprimirFuncionalidades();
+
 int main(){
 
     crearTablaSimbolos();
 
     insertarPalabrasReservadas();
 
-    imprimirTablaSimbolos();
+    //imprimirTablaSimbolos();
+    imprimirFuncionalidades();
+    printf("\n\n");
     yyin = stdin;
-    printf("\n\n>> \t");
     while(1){
+        printf(">> ");
         yyparse();
     }
 

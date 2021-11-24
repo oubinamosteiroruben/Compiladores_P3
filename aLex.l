@@ -10,8 +10,6 @@
     #include <string.h>
     #include "stack.h"
 
-    int nLines = 0;
-
 %}
 
 
@@ -44,33 +42,20 @@ ARCHIVO {IDENTIFICADOR}[.]{IDENTIFICADOR}
 
 %%
 
-{NUMERO} { printf("Encontrado TKN_NUM: %f\n",atof(yytext));
-                           yylval.TKN_NUM =atof(yytext); 
-                           return(TKN_NUM);}
-{LOAD} {printf("Encontrado TKN_LOAD: %s\n",yytext);
-        return(TKN_LOAD);}
-{ADD} {printf("Encontrado TKN_ADD: %s\n",yytext);
-       return(TKN_ADD);}
-{IMPRIMIR} {printf("Encontrado TKN_IMPRIMIR: %s\n",yytext);
-            return (TKN_IMPRIMIR);}
-{EXIT} {printf("Encontrado TKN_EXIT: %s\n",yytext);
-            return (TKN_EXIT);}
-{HELP} {printf("Encontrado TKN_HELP: %s\n",yytext);
-            return (TKN_HELP);}
-{VARIABLES} {printf("Encontrado TKN_GETVARS: %s\n",yytext);
-            return (TKN_GETVARS);}
-{RESET} {printf("Encontrado TKN_RESET: %s\n",yytext);
-            return (TKN_RESET);}
-{CONSTANTES} {printf("Encontrado TKN_GETCTES: %s\n",yytext);
-            return(TKN_GETCTES);}
-{ARCHIVO} {printf("Encontrado TKN_ARCHIVO: %s\n",yytext);
-            yylval.TKN_ARCHIVO = yytext;
-            return (TKN_ARCHIVO);}
+{NUMERO} { yylval.TKN_NUM =atof(yytext); return(TKN_NUM);}
+{LOAD} {return(TKN_LOAD);}
+{ADD} {return(TKN_ADD);}
+{IMPRIMIR} {return (TKN_IMPRIMIR);}
+{EXIT} {return (TKN_EXIT);}
+{HELP} {return (TKN_HELP);}
+{VARIABLES} {return (TKN_GETVARS);}
+{RESET} {return (TKN_RESET);}
+{CONSTANTES} {return(TKN_GETCTES);}
+{ARCHIVO} {yylval.TKN_ARCHIVO = yytext;return (TKN_ARCHIVO);}
 
-{DEFINIR} {printf("Encontrado TKN_DEFINIR: %s\n",yytext);
-                    return(TKN_DEFINIR);}
+{DEFINIR} {return(TKN_DEFINIR);}
             
-{IDENTIFICADOR} {printf("Encontrado identificador: %s\n",yytext);
+{IDENTIFICADOR} {
                 tipoelem E;
                 if(existe(yytext)){
                     E = getElem(yytext);
@@ -87,40 +72,30 @@ ARCHIVO {IDENTIFICADOR}[.]{IDENTIFICADOR}
                     }
                     return E.tipo;
                 }else{
-                    printf("No existe en la tabla de símbolos\n");
                     yylval.TKN_NOINI = strdup(yytext);
                     return TKN_NOINI; 
                 }
 }
 
 
-"+" {printf("Encontrado TKN_MAS: %s\n",yytext);
-     return(TKN_MAS);}
+"+" {return(TKN_MAS);}
 
-"-" {printf("Encontrado TKN_MENOS: %s\n",yytext);
-    return(TKN_MENOS);}
+"-" {return(TKN_MENOS);}
 
-"*" {printf("Encontrado TKN_MULT: %s\n",yytext);
-    return(TKN_MULT);}
+"*" {return(TKN_MULT);}
 
-"/" {printf("Encontrado TKN_DIV: %s\n",yytext);
-    return(TKN_DIV);}
+"/" {return(TKN_DIV);}
 
-"(" {printf("Encontrado TKN_PARIZQ: %s\n",yytext);
-    return(TKN_PARIZQ);}
+"(" {return(TKN_PARIZQ);}
 
-")" {printf("Encontrado TKN_PARDER: %s\n",yytext);
-    return(TKN_PARDER);}
+")" {return(TKN_PARDER);}
 
-"^" {printf("Encontrado TKN_ELEV: %s\n",yytext);
-    return(TKN_ELEV);}
+"^" {return(TKN_ELEV);}
 
-";" {printf("Encontrado TKN_PTOCOMA: %s\n",yytext);
-    return(TKN_PTOCOMA);}
+";" {return(TKN_PTOCOMA);}
 
-"=" {printf("Encontrado TKN_IGUAL: %s\n",yytext);
-    return(TKN_IGUAL);}
-"\n" {nLines++;return(TKN_SALTO);}
+"=" {return(TKN_IGUAL);}
+"\n" {return(TKN_SALTO);}
 
 
 
@@ -129,11 +104,13 @@ ARCHIVO {IDENTIFICADOR}[.]{IDENTIFICADOR}
             if(stackVacio(TIPO_FD) == TRUE){
                 yyin = stdin;
                 yyrestart(yyin);
+                
             }else{
                 tipoelempila E = topeStack(TIPO_FD);
-                printf("llego aqui\n");
                 yyin = E.fd;
             }
+
+            return TKN_SALTO;
         }
 %%
 

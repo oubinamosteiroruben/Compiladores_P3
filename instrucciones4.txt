@@ -1,0 +1,3 @@
+4;
+load instrucciones5.txt
+4;

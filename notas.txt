@@ -1,3 +1,0 @@
-gcc funciones.c -o funciones.so -shared
-
-gcc main.c -ldl .....

@@ -59,19 +59,17 @@ extern int yydebug;
     TKN_ELEV = 269,
     TKN_PARIZQ = 270,
     TKN_PARDER = 271,
-    TKN_SIN = 272,
-    TKN_COS = 273,
-    TKN_IGUAL = 274,
-    TKN_EXIT = 275,
-    TKN_ADD = 276,
-    TKN_HELP = 277,
-    TKN_IMPRIMIR = 278,
-    TKN_GETVARS = 279,
-    TKN_GETCTES = 280,
-    TKN_RESET = 281,
-    TKN_LOAD = 282,
-    TKN_DEFINIR = 283,
-    TKN_ARCHIVO = 284
+    TKN_IGUAL = 272,
+    TKN_EXIT = 273,
+    TKN_ADD = 274,
+    TKN_HELP = 275,
+    TKN_IMPRIMIR = 276,
+    TKN_GETVARS = 277,
+    TKN_GETCTES = 278,
+    TKN_RESET = 279,
+    TKN_LOAD = 280,
+    TKN_DEFINIR = 281,
+    TKN_ARCHIVO = 282
   };
 #endif
 
@@ -103,7 +101,7 @@ union YYSTYPE
   tipoelem TKN_VAR;
   /* TKN_CTE  */
   tipoelem TKN_CTE;
-#line 107 "aSin.tab.h" /* yacc.c:1909  */
+#line 105 "aSin.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

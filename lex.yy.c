@@ -573,10 +573,8 @@ char *yytext;
     #include <string.h>
     #include "stack.h"
 
-    int nLines = 0;
-
-#line 579 "lex.yy.c"
-#line 580 "lex.yy.c"
+#line 577 "lex.yy.c"
+#line 578 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -793,10 +791,10 @@ YY_DECL
 		}
 
 	{
-#line 45 "aLex.l"
+#line 43 "aLex.l"
 
 
-#line 800 "lex.yy.c"
+#line 798 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -855,76 +853,63 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 47 "aLex.l"
-{ printf("Encontrado TKN_NUM: %f\n",atof(yytext));
-                           yylval.TKN_NUM =atof(yytext); 
-                           return(TKN_NUM);}
+#line 45 "aLex.l"
+{ yylval.TKN_NUM =atof(yytext); return(TKN_NUM);}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 50 "aLex.l"
-{printf("Encontrado TKN_LOAD: %s\n",yytext);
-        return(TKN_LOAD);}
+#line 46 "aLex.l"
+{return(TKN_LOAD);}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 52 "aLex.l"
-{printf("Encontrado TKN_ADD: %s\n",yytext);
-       return(TKN_ADD);}
+#line 47 "aLex.l"
+{return(TKN_ADD);}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 54 "aLex.l"
-{printf("Encontrado TKN_IMPRIMIR: %s\n",yytext);
-            return (TKN_IMPRIMIR);}
+#line 48 "aLex.l"
+{return (TKN_IMPRIMIR);}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 56 "aLex.l"
-{printf("Encontrado TKN_EXIT: %s\n",yytext);
-            return (TKN_EXIT);}
+#line 49 "aLex.l"
+{return (TKN_EXIT);}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 58 "aLex.l"
-{printf("Encontrado TKN_HELP: %s\n",yytext);
-            return (TKN_HELP);}
+#line 50 "aLex.l"
+{return (TKN_HELP);}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 60 "aLex.l"
-{printf("Encontrado TKN_GETVARS: %s\n",yytext);
-            return (TKN_GETVARS);}
+#line 51 "aLex.l"
+{return (TKN_GETVARS);}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 62 "aLex.l"
-{printf("Encontrado TKN_RESET: %s\n",yytext);
-            return (TKN_RESET);}
+#line 52 "aLex.l"
+{return (TKN_RESET);}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 64 "aLex.l"
-{printf("Encontrado TKN_GETCTES: %s\n",yytext);
-            return(TKN_GETCTES);}
+#line 53 "aLex.l"
+{return(TKN_GETCTES);}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 66 "aLex.l"
-{printf("Encontrado TKN_ARCHIVO: %s\n",yytext);
-            yylval.TKN_ARCHIVO = yytext;
-            return (TKN_ARCHIVO);}
+#line 54 "aLex.l"
+{yylval.TKN_ARCHIVO = yytext;return (TKN_ARCHIVO);}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 70 "aLex.l"
-{printf("Encontrado TKN_DEFINIR: %s\n",yytext);
-                    return(TKN_DEFINIR);}
+#line 56 "aLex.l"
+{return(TKN_DEFINIR);}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 73 "aLex.l"
-{printf("Encontrado identificador: %s\n",yytext);
+#line 58 "aLex.l"
+{
                 tipoelem E;
                 if(existe(yytext)){
                     E = getElem(yytext);
@@ -941,7 +926,6 @@ YY_RULE_SETUP
                     }
                     return E.tipo;
                 }else{
-                    printf("No existe en la tabla de símbolos\n");
                     yylval.TKN_NOINI = strdup(yytext);
                     return TKN_NOINI; 
                 }
@@ -949,84 +933,77 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 97 "aLex.l"
-{printf("Encontrado TKN_MAS: %s\n",yytext);
-     return(TKN_MAS);}
+#line 81 "aLex.l"
+{return(TKN_MAS);}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 100 "aLex.l"
-{printf("Encontrado TKN_MENOS: %s\n",yytext);
-    return(TKN_MENOS);}
+#line 83 "aLex.l"
+{return(TKN_MENOS);}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 103 "aLex.l"
-{printf("Encontrado TKN_MULT: %s\n",yytext);
-    return(TKN_MULT);}
+#line 85 "aLex.l"
+{return(TKN_MULT);}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 106 "aLex.l"
-{printf("Encontrado TKN_DIV: %s\n",yytext);
-    return(TKN_DIV);}
+#line 87 "aLex.l"
+{return(TKN_DIV);}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 109 "aLex.l"
-{printf("Encontrado TKN_PARIZQ: %s\n",yytext);
-    return(TKN_PARIZQ);}
+#line 89 "aLex.l"
+{return(TKN_PARIZQ);}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 112 "aLex.l"
-{printf("Encontrado TKN_PARDER: %s\n",yytext);
-    return(TKN_PARDER);}
+#line 91 "aLex.l"
+{return(TKN_PARDER);}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 115 "aLex.l"
-{printf("Encontrado TKN_ELEV: %s\n",yytext);
-    return(TKN_ELEV);}
+#line 93 "aLex.l"
+{return(TKN_ELEV);}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 118 "aLex.l"
-{printf("Encontrado TKN_PTOCOMA: %s\n",yytext);
-    return(TKN_PTOCOMA);}
+#line 95 "aLex.l"
+{return(TKN_PTOCOMA);}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 121 "aLex.l"
-{printf("Encontrado TKN_IGUAL: %s\n",yytext);
-    return(TKN_IGUAL);}
+#line 97 "aLex.l"
+{return(TKN_IGUAL);}
 	YY_BREAK
 case 22:
 /* rule 22 can match eol */
 YY_RULE_SETUP
-#line 123 "aLex.l"
-{nLines++;return(TKN_SALTO);}
+#line 98 "aLex.l"
+{return(TKN_SALTO);}
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 127 "aLex.l"
+#line 102 "aLex.l"
 {  
             eliminarElementoStack(TIPO_FD);
             if(stackVacio(TIPO_FD) == TRUE){
                 yyin = stdin;
                 yyrestart(yyin);
+                
             }else{
                 tipoelempila E = topeStack(TIPO_FD);
-                printf("llego aqui\n");
                 yyin = E.fd;
             }
+
+            return TKN_SALTO;
         }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 138 "aLex.l"
+#line 115 "aLex.l"
 ECHO;
 	YY_BREAK
-#line 1030 "lex.yy.c"
+#line 1007 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -2029,7 +2006,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 138 "aLex.l"
+#line 115 "aLex.l"
 
 
 

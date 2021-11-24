@@ -35,37 +35,36 @@
 
 %start Calculadora_i;
 
-%token <double> TKN_NUM
-%token <tipoelem> TKN_FNC
-%token <tipoelem> TKN_VAR
-%token <tipoelem> TKN_CTE
-%token <char *> TKN_NOINI
-%token TKN_MAS
-%token TKN_MENOS
+%token <double> TKN_NUM // Numero double
+%token <tipoelem> TKN_FNC // Función
+%token <tipoelem> TKN_VAR // Variable
+%token <tipoelem> TKN_CTE // Constante
+%token <char *> TKN_NOINI // No inicializado
 
-%token TKN_MULT
-%token TKN_DIV
+%token TKN_MAS // Operando '+'
+%token TKN_MENOS // Operando '-'
 
-%token TKN_PTOCOMA
-%token TKN_SALTO
-%token TKN_ELEV
-%token TKN_PARIZQ
-%token TKN_PARDER
-%token TKN_SIN
-%token TKN_COS
-%token TKN_IGUAL
+%token TKN_MULT // Operando '*'
+%token TKN_DIV // Operando '/'
 
-%token TKN_EXIT
-%token TKN_ADD
-%token TKN_HELP
-%token TKN_IMPRIMIR
-%token TKN_GETVARS
-%token TKN_GETCTES
-%token TKN_RESET
-%token TKN_LOAD
-%token TKN_DEFINIR
+%token TKN_PTOCOMA // Delimitador ';'
+%token TKN_SALTO // Salto de linea 
+%token TKN_ELEV // Operando '^'
+%token TKN_PARIZQ // Paréntesis izquierdo
+%token TKN_PARDER // Paréntesis derecho
+%token TKN_IGUAL // Operando '='
 
-%token <char *> TKN_ARCHIVO
+%token TKN_EXIT // Comando Exit
+%token TKN_ADD // Comando Add
+%token TKN_HELP // Comando Help
+%token TKN_IMPRIMIR // Comando imprimir tabla de símbolos
+%token TKN_GETVARS  // Comando para obtener las variables
+%token TKN_GETCTES  // Comando para obtener las constantes
+%token TKN_RESET // Comando para elminar las variables creadas
+%token TKN_LOAD // Comando para cargar un archivo
+%token TKN_DEFINIR // Comando para definir una constante
+
+%token <char *> TKN_ARCHIVO // Nombre de un archivo
 
 %type <double> Expresion
 %type <double> Expr_Mult
@@ -76,7 +75,7 @@
 %%
 
 Calculadora_i : Calculadora_i Calculadora {if(yyin == stdin) printf(">> ");};
-                | Calculadora;
+                | Calculadora {if(yyin == stdin) printf(">> ");};
 
 Calculadora:    TKN_SALTO
                 |Expresion TKN_SALTO
@@ -112,13 +111,13 @@ Valor:  TKN_PARIZQ Expresion TKN_PARDER {$$=$2;}
         |TKN_MENOS Expresion {$$=-$2;}
 ;
 
-Otro: TKN_ADD TKN_ARCHIVO {printf("archivo: %s\n",$2);  addFunciones($2);}
-    | TKN_IMPRIMIR {printf("IMPRIMIR\n"); imprimirTablaSimbolos();}
-    | TKN_GETVARS {printf("Variables\n"); imprimirVariables();}
-    | TKN_GETCTES {printf("Constantes\n"); imprimirConstantes();}
-    | TKN_HELP {printf("Help\n"); imprimirFuncionalidades();}
-    | TKN_EXIT {printf("Exit\n"); salir();}
-    | TKN_LOAD TKN_ARCHIVO {printf("Load archivo: %s\n",$2);  loadArchivo($2);}
+Otro: TKN_ADD TKN_ARCHIVO {addFunciones($2);}
+    | TKN_IMPRIMIR {imprimirTablaSimbolos();}
+    | TKN_GETVARS {imprimirVariables();}
+    | TKN_GETCTES {imprimirConstantes();}
+    | TKN_HELP {imprimirFuncionalidades();}
+    | TKN_EXIT {salir();}
+    | TKN_LOAD TKN_ARCHIVO {loadArchivo($2);}
     | TKN_DEFINIR TKN_NOINI Expresion {addElem($2,$3,TKN_CTE);}
     | TKN_RESET {reset();}
 ;
@@ -150,17 +149,17 @@ void addFunciones(char * archivo){
         nuevoElemStack(E);
         char nombre[MAX];
         FILE *fd;
-        if(fd = fopen(aux,"r")){
+        if((fd = fopen(aux,"r"))){
             while(fscanf(fd,"%[^\n] ", nombre) != EOF){
                 if(!existe(nombre)){
                     tipoelem E;
-                    E.nombre = (char*)calloc(sizeof(char),(strlen("cuadrado")+1));
+                    E.nombre = (char*)calloc(sizeof(char),(strlen(nombre)+1));
                     strcpy(E.nombre,nombre);
                     E.tipo = TKN_FNC;
                     E.valor.fnc = (accion_t) dlsym(libhandle,nombre);
                     insertarSimbolo(E);
                 }else{
-                    yyerror("funcion existente");
+                    yyerror("función ya declarada");
                 }
             }
             fclose(fd);
@@ -187,9 +186,9 @@ void imprimirFuncionalidades(){
     printf("||\tADD <archivo> --> Permite cargar nuevas funciones apartir de un archivo\t||\n");
     printf("||\tVARIABLES --> Muestra las variables almacenadas\t\t\t\t||\n");
     printf("||\tCONSTANTES --> Muestra las constantes almacenadas\t\t\t||\n");
+    printf("||\tDEFINE <nombreConstante> <valorConstante> \t\t\t\t||\n");
     printf("||\tEXIT --> Salir\t\t\t\t\t\t\t\t||\n");
     imprimirTipoTablaSimbolos(TKN_FNC);
-    
 }
 
 
@@ -203,7 +202,7 @@ void destruirFD(){
 
 void loadArchivo(char * archivo){
     FILE * fd;
-    if(fd=fopen(archivo,"r")){
+    if((fd=fopen(archivo,"r"))){
         tipoelempila E;
         E.tipo = TIPO_FD;
         E.fd = fd;

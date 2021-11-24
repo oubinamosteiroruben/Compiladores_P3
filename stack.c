@@ -2,7 +2,10 @@
 
 #include "stack.h"
 
+// Pila donde se almacenan las librerías añadidas
 stack pLib;
+
+// Pila donde se almacenan los ficheros abiertos
 stack pFd;
 
 void crearStack(){
@@ -77,8 +80,6 @@ tipoelempila topeStack(int tipo){
     case TIPO_FD:
         return tope(pFd);
         break;
-    default:
-        return E;
-        break;
     }
+    return E;
 }
